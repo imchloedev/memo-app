@@ -1,8 +1,12 @@
-import React from 'react';
-import {View, Text, Button} from 'react-native';
-import styled from 'styled-components/native';
+import React from "react";
+import { View, Text, Button } from "react-native";
+import styled from "styled-components/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../@types/index";
 
-const Home = ({navigation}: any) => {
+type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+const Home = ({ navigation }: HomeProps) => {
   // navigation 타입 지정하기
   return (
     <Container>
@@ -10,7 +14,7 @@ const Home = ({navigation}: any) => {
       <View>
         <Button
           title="create new memo"
-          onPress={() => navigation.navigate('New Memo')}
+          onPress={() => navigation.navigate("Memo")}
         />
       </View>
     </Container>

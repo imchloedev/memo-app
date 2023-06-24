@@ -1,10 +1,15 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React from "react";
+import { View, Text, Button } from "react-native";
+import { RootStackParamList } from "../@types";
 
-const CreateNewMemo = () => {
+type TypeNewMemoProps = NativeStackScreenProps<RootStackParamList, "Memo">;
+
+const CreateNewMemo = ({ navigation, route }: TypeNewMemoProps) => {
   return (
     <View>
       <Text>NEW!</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
 };
