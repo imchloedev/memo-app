@@ -5,7 +5,7 @@ import { RootStackParamList } from "../@types";
 
 type TypeNewMemoProps = NativeStackScreenProps<RootStackParamList, "Memo">;
 
-const CreateNewMemo = ({ navigation, route }: TypeNewMemoProps) => {
+const NewMemo = ({ navigation, route }: TypeNewMemoProps) => {
   return (
     <View>
       <Text>NEW!</Text>
@@ -14,4 +14,4 @@ const CreateNewMemo = ({ navigation, route }: TypeNewMemoProps) => {
   );
 };
 
-export default CreateNewMemo;
+export default NewMemo;
