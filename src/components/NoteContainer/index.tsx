@@ -1,29 +1,62 @@
 import React from "react";
-import { useColorScheme } from "react-native";
+import { View } from "react-native";
 import { styled } from "styled-components/native";
+import { useRecoilState } from "recoil";
+import { useColorScheme } from "react-native";
+import IconButton from "@components/IconButton";
+import { dark, light } from "@styles/theme";
+import { INote, notesState } from "@recoil/atoms";
+import { storeNotes } from "@api";
 
-const NoteContainer = ({ title }: any) => {
+interface INoteContainerProps {
+  children: React.ReactNode;
+  id: string | number;
+  moveToNote: (id: string | number) => void;
+}
+
+const NoteContainer = ({ children, moveToNote, id }: INoteContainerProps) => {
   const isDarkMode = useColorScheme() === "dark";
-  // note mock data required here
+  const currentTheme = isDarkMode ? dark : light;
+  const [notes, setNotes] = useRecoilState<INote>(notesState);
+
+  const deleteNote = async (key: number | string) => {
+    const newNotes = { ...notes };
+
+    delete newNotes[key];
+    setNotes(newNotes);
+    await storeNotes(newNotes);
+  };
 
   return (
-    <Wrapper isDarkMode={isDarkMode}>
-      <NoteTitle isDarkMode={isDarkMode}>{title}</NoteTitle>
+    <Wrapper onPress={() => moveToNote(id)}>
+      <View>{children}</View>
+
+      <ButtonWrapper>
+        <IconButton
+          iconName="delete"
+          color={currentTheme.color.commonMiddleGray}
+          onPress={() => deleteNote(id)}
+        />
+      </ButtonWrapper>
     </Wrapper>
   );
 };
 
 export default NoteContainer;
 
-const Wrapper = styled.View<{ isDarkMode: boolean }>`
-  background-color: ${({ isDarkMode }) => (isDarkMode ? "#444" : "#eee")};
+const Wrapper = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: space-between;
+  background-color: ${(props) => props.theme.color.memoContainer};
   height: 100px;
   margin: 10px 20px;
   padding: 14px;
   border-radius: 20px;
-  color: ${({ isDarkMode }) => (isDarkMode ? "white" : "#444")};
+  overflow: hidden;
 `;
 
-const NoteTitle = styled.Text<{ isDarkMode: boolean }>`
-  color: ${({ isDarkMode }) => (isDarkMode ? "white" : "#444")};
+const ButtonWrapper = styled.View`
+  flex: 1;
+  justify-content: flex-end;
+  align-items: flex-end;
 `;

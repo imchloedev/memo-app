@@ -1,22 +1,37 @@
-import 'styled-components';
+import "styled-components";
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
-    mainBlue: string;
-    mainDarkGrey: string;
-    mainLightGrey: string;
-    mainRed: string;
+    common: {
+      color: {
+        commonWhite: string;
+        commonBlack: string;
+        activeColor: string;
+        deactiveColor: string;
+        boxActiveColor: string;
+      };
+    };
 
-    fontLarge: number;
-    fontMedium: number;
-    fontRegular: number;
-    fontSmall: number;
-
-    weightBold: number;
-    weightMedium: number;
-    weightRegular: number;
-
-    lineHeightRegular: number;
-    lineHeightMicro: number;
+    dark: {
+      color: {
+        main: string;
+        white: string;
+        black: string;
+        darkGray: string;
+        textColor: string;
+        bg: string;
+        modalBg: string;
+      };
+    };
+    light: {
+      color: {
+        main: string;
+        white: string;
+        black: string;
+        textColor: string;
+        bg: string;
+        modalBg: string;
+      };
+    };
   }
 }

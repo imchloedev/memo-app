@@ -7,14 +7,20 @@
 
 import React from "react";
 import { ThemeProvider } from "styled-components";
-import Navigator from "~/Navigator";
-import { theme } from "@styles/theme";
+import { RecoilRoot } from "recoil";
+import { useColorScheme } from "react-native";
+import { dark, light } from "./styles/theme";
+import Navigator from "./Navigator";
 
 function App(): JSX.Element {
+  const theme = useColorScheme();
+
   return (
-    <ThemeProvider theme={theme}>
-      <Navigator />
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={theme === "dark" ? dark : light}>
+        <Navigator />
+      </ThemeProvider>
+    </RecoilRoot>
   );
 }
 

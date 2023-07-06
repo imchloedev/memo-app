@@ -3,6 +3,12 @@ module.exports = {
   plugins: [
     "babel-plugin-styled-components",
     [
+      "react-native-reanimated/plugin",
+      {
+        relativeSourceLocation: true,
+      },
+    ],
+    [
       "module-resolver",
       {
         root: ["./src"],
@@ -23,6 +29,9 @@ module.exports = {
           "@screens": "./src/screens",
           "@assets": "./src/assets",
           "@styles": "./src/styles",
+          "@api": "./src/api",
+          "@utils": "./src/utils",
+          "@recoil": "./src/recoil",
         },
       },
     ],

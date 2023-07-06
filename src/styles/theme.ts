@@ -1,20 +1,39 @@
-import {DefaultTheme} from 'styled-components/native';
+import { DefaultTheme } from "styled-components/native";
 
-export const theme: DefaultTheme = {
-  mainBlue: '#065e85',
-  mainDarkGrey: '#3e3e3e',
-  mainLightGrey: '#c4c4c4',
-  mainRed: '#e01e1e',
-
-  fontLarge: 26,
-  fontMedium: 22,
-  fontRegular: 18,
-  fontSmall: 12,
-
-  weightBold: 700,
-  weightMedium: 500,
-  weightRegular: 400,
-
-  lineHeightRegular: 27,
-  lineHeightMicro: 18,
+const common: DefaultTheme = {
+  color: {
+    commonWhite: "#FFFFFF",
+    commonBlack: "#000000",
+    commonMiddleGray: "#555",
+    activeColor: "#DE5E69",
+    deactiveColor: "#DE5E6950",
+    boxActiveColor: "#DE5E6940",
+  },
 };
+
+const dark: DefaultTheme = {
+  color: {
+    white: "#ffffff",
+    black: "#000",
+    memoContainer: "#222",
+    textColor: "#fff",
+    bg: "#121212",
+    modalBg: "#151515",
+    ...common.color,
+  },
+};
+
+const light: DefaultTheme = {
+  ...dark,
+  color: {
+    black: "#000",
+    white: "#ffffff",
+    memoContainer: "#eee",
+    textColor: "#000",
+    bg: "#ffffff",
+    modalBg: "#eee",
+    ...common.color,
+  },
+};
+
+export { dark, light };
