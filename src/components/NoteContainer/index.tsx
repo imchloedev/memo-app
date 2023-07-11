@@ -6,7 +6,7 @@ import { useColorScheme } from "react-native";
 import IconButton from "@components/IconButton";
 import { dark, light } from "@styles/theme";
 import { INote, notesState } from "@recoil/atoms";
-import { storeNotes } from "@api";
+import { storeNotes } from "@api/storage";
 
 interface INoteContainerProps {
   children: React.ReactNode;

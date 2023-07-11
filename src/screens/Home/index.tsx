@@ -45,7 +45,7 @@ const Home = ({ navigation }: HomeProps) => {
 
   useEffect(() => {
     animatedHeaderTitle();
-  }, [navigation, scrollY]);
+  }, [navigation, scrollY, filter]);
 
   useEffect(() => {
     loadNotes();
