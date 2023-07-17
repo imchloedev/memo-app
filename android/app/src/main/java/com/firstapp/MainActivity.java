@@ -1,24 +1,44 @@
 package com.firstapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle; // add
-
 import com.facebook.react.ReactActivity;
-
-import org.devio.rn.splashscreen.SplashScreen; 
-
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this);
+    // android 12
+    androidx.core.splashscreen.SplashScreen.installSplashScreen(this);
+    
+    switch (
+      getResources().getConfiguration().uiMode &
+      Configuration.UI_MODE_NIGHT_MASK
+    ) {
+      case Configuration.UI_MODE_NIGHT_YES:
+        setTheme(R.style.DarkTheme);
+
+        break;
+      case Configuration.UI_MODE_NIGHT_NO:
+        setTheme(R.style.LightTheme);
+        break;
+      default:
+        setTheme(R.style.LightTheme);
+    }
+
+    SplashScreen.show(this, true);
     super.onCreate(savedInstanceState);
   }
 
-
+  // @Override
+  // protected void onCreate(Bundle savedInstanceState) {
+  //   SplashScreen.show(this, R.style.SplashScreenTheme, true); // here
+  //   super.onCreate(savedInstanceState);
+  // }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
@@ -37,9 +57,10 @@ public class MainActivity extends ReactActivity {
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new DefaultReactActivityDelegate(
-        this,
-        getMainComponentName(),
-        // If you opted-in for the New Architecture, we enable the Fabric Renderer.
-        DefaultNewArchitectureEntryPoint.getFabricEnabled());
+      this,
+      getMainComponentName(),
+      // If you opted-in for the New Architecture, we enable the Fabric Renderer.
+      DefaultNewArchitectureEntryPoint.getFabricEnabled()
+    );
   }
 }
