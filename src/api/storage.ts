@@ -11,3 +11,18 @@ export const getNotes = async () => {
 export const storeNotes = async (newData: INote) => {
   await AsyncStorage.setItem("@notes", JSON.stringify(newData));
 };
+
+export const getUserInfo = async () => {
+  try {
+    const data = (await AsyncStorage.getItem("token")) || "{}";
+    const res = await JSON.parse(data);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const storeUserInfo = async () => {
+  const token = Math.random().toString(16).slice(2);
+  await AsyncStorage.setItem("token", JSON.stringify(token));
+};

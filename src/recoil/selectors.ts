@@ -1,5 +1,6 @@
 import { selector } from "recoil";
-import { notesFilterState, notesState } from "./atoms";
+import { notesFilterState, notesState, userState } from "./atoms";
+import { getUserInfo } from "~/api/storage";
 
 export interface INoteInfo {
   folder: string;

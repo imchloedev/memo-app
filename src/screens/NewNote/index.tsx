@@ -3,11 +3,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { RootStackParamList } from "../@types";
+import { MainStackParamList } from "../@types";
 import { notesFilterState, notesState, textState } from "@recoil/atoms";
 import { storeNotes } from "@api/storage";
 
-type NewNoteProps = NativeStackScreenProps<RootStackParamList, "Note">;
+type NewNoteProps = NativeStackScreenProps<MainStackParamList, "Note">;
 
 const NewNote = ({ navigation }: NewNoteProps) => {
   const [text, setText] = useRecoilState(textState);
@@ -56,16 +56,16 @@ export default NewNote;
 export const Container = styled.View`
   flex: 1;
   padding: 20px;
-  background-color: ${(props) => props.theme.color.bg};
+  background-color: ${({ theme }) => theme.color.bg};
 `;
 
 export const Textarea = styled.TextInput.attrs({
   placeholderTextColor: "#555",
 })`
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
 `;
 
 export const SaveButton = styled.Text`
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
   font-size: 16px;
 `;

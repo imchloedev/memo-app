@@ -2,9 +2,9 @@ import React from "react";
 import NotePicker from "~/components/NotePicker";
 import { styled } from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../@types";
+import { MainStackParamList } from "../@types";
 
-type ModalProps = NativeStackScreenProps<RootStackParamList, "Modal">;
+type ModalProps = NativeStackScreenProps<MainStackParamList, "Modal">;
 
 const Modal = ({ navigation }: ModalProps) => {
   return (
@@ -40,16 +40,7 @@ const Wrapper = styled.View`
   left: 0;
   bottom: 0;
   height: 40%;
-  background-color: ${(props) => props.theme.color.modalBg};
-`;
-
-const ModalHeader = styled.View`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 20px 20px 0 20px;
+  background-color: ${({ theme }) => theme.color.modalBg};
 `;
 
 const CloseBtn = styled.TouchableOpacity``;

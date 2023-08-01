@@ -5,22 +5,19 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import HomeHeaderTitle from "@components/HomeHeaderTitle";
 import NoteContainer from "@components/NoteContainer";
-import { RootStackParamList } from "../@types/index";
+import { MainStackParamList } from "../@types/index";
 import { notesFilterState, notesState } from "@recoil/atoms";
 import { getNoteDate } from "~/utils/date";
 import { getNotes } from "@api/storage";
 import { INoteInfo, filteredNotesList } from "@recoil/selectors";
 
-type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
+type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
 const Home = ({ navigation }: HomeProps) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const setNotes = useSetRecoilState(notesState);
   const filter = useRecoilValue(notesFilterState);
   const filteredNotes = useRecoilValue(filteredNotesList);
-
-  const all = useRecoilValue(notesState);
-  console.log(all);
 
   const loadNotes = async () => {
     const result = await getNotes();
@@ -84,7 +81,7 @@ const Home = ({ navigation }: HomeProps) => {
 export default Home;
 
 const Container = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.color.bg};
+  background-color: ${({ theme }) => theme.color.bg};
   flex: 1;
 `;
 
@@ -93,7 +90,7 @@ const Title = styled.Text`
   margin: 20px 0;
   padding: 0 20px;
   font-weight: bold;
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
 `;
 
 const NoteTitleWrapper = styled.View`
@@ -105,7 +102,7 @@ const NoteTitle = styled.Text.attrs({
   ellipsizeMode: "tail",
   numberOfLines: 2,
 })`
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
 `;
 
 const NoteDate = styled.Text`
@@ -119,5 +116,5 @@ const NoteFolder = styled.Text`
 const GuideText = styled.Text`
   margin: 20px 0;
   text-align: center;
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
 `;

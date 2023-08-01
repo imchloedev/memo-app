@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { RootStackParamList } from "../@types";
+import { MainStackParamList } from "../@types";
 import { INote, notesFilterState, notesState } from "@recoil/atoms";
 import { Container, SaveButton, Textarea } from "../NewNote";
 import { getNotes, storeNotes } from "@api/storage";
 
-type ViewProps = NativeStackScreenProps<RootStackParamList, "Edit">;
+type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
 const Edit = ({ route, navigation }: ViewProps) => {
   const { noteId } = route.params;

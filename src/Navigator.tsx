@@ -1,20 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { useColorScheme } from "react-native";
 import Home from "@screens/Home";
-import { RootStackParamList } from "@screens/@types";
+import { LoginStackParamList, MainStackParamList } from "@screens/@types";
 import Edit from "@screens/Edit";
 import NewNote from "@screens/NewNote";
 import Modal from "@screens/Modal";
 import IconButton from "@components/IconButton";
-import { dark, light } from "./styles/theme";
+import SignIn from "./screens/SignIn";
+import { getUserInfo } from "./api/storage";
+import SignUp from "./screens/SignUp";
+import { useRecoilState } from "recoil";
+import { tokenState } from "./recoil/atoms";
+import useThemeColors from "./hooks/useThemeColors";
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<MainStackParamList>();
+const LoginStack = createNativeStackNavigator<LoginStackParamList>();
 
-const HomeStack = () => {
-  const isDarkMode = useColorScheme() === "dark";
-  const currentTheme = isDarkMode ? dark : light;
+const LoginStackNavi = () => {
+  return (
+    <Stack.Navigator>
+      <LoginStack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <LoginStack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          headerShown: true,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const HomeStackNavi = () => {
+  const mode = useThemeColors();
 
   return (
     <Stack.Navigator initialRouteName="Home">
@@ -23,19 +48,19 @@ const HomeStack = () => {
         component={Home}
         options={({ navigation }) => ({
           headerStyle: {
-            backgroundColor: currentTheme.color.bg,
+            backgroundColor: mode.color.bg,
           },
           headerRight: () => (
             <IconButton
               iconName="pluscircleo"
-              color={currentTheme.color.textColor}
+              color={mode.color.textColor}
               onPress={() => navigation.push("Note")}
             />
           ),
           headerLeft: () => (
             <IconButton
               iconName="folder1"
-              color={currentTheme.color.textColor}
+              color={mode.color.textColor}
               onPress={() => navigation.navigate("Modal")}
             />
           ),
@@ -47,10 +72,10 @@ const HomeStack = () => {
         component={NewNote}
         options={{
           headerStyle: {
-            backgroundColor: currentTheme.color.bg,
+            backgroundColor: mode.color.bg,
           },
           title: "New Note",
-          headerTintColor: currentTheme.color.textColor,
+          headerTintColor: mode.color.textColor,
         }}
       />
       <Stack.Screen
@@ -60,9 +85,9 @@ const HomeStack = () => {
         options={{
           title: "",
           headerStyle: {
-            backgroundColor: currentTheme.color.bg,
+            backgroundColor: mode.color.bg,
           },
-          headerTintColor: currentTheme.color.textColor,
+          headerTintColor: mode.color.textColor,
         }}
       />
       <Stack.Screen
@@ -75,9 +100,20 @@ const HomeStack = () => {
 };
 
 const Navigator = () => {
+  const [token, setToken] = useRecoilState(tokenState);
+
+  const getUser = async () => {
+    const result = await getUserInfo();
+    setToken(result);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <NavigationContainer>
-      <HomeStack />
+      {token ? <HomeStackNavi /> : <LoginStackNavi />}
     </NavigationContainer>
   );
 };

@@ -10,15 +10,15 @@ interface IIconButtonProps {
 
 const IconButton = ({ iconName, color, onPress }: IIconButtonProps) => {
   return (
-    <Container>
-      <Icon name={iconName} color={color} onPress={onPress} size={22} />
-    </Container>
+    <IconContainer>
+      <Icon name={iconName} color={color} onPress={onPress} size={20} />
+    </IconContainer>
   );
 };
 
 export default IconButton;
 
-const Container = styled.TouchableOpacity`
+export const IconContainer = styled.TouchableOpacity`
   width: 24px;
   height: 24px;
   justify-content: center;

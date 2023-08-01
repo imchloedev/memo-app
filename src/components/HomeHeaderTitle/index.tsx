@@ -18,5 +18,5 @@ const HomeHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {
 export default HomeHeaderTitle;
 
 const HeaderTitle = styled.Text`
-  color: ${(props) => props.theme.color.textColor};
+  color: ${({ theme }) => theme.color.textColor};
 `;

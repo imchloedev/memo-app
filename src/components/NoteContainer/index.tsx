@@ -2,11 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState } from "recoil";
-import { useColorScheme } from "react-native";
 import IconButton from "@components/IconButton";
-import { dark, light } from "@styles/theme";
 import { INote, notesState } from "@recoil/atoms";
 import { storeNotes } from "@api/storage";
+import useThemeColors from "~/hooks/useThemeColors";
 
 interface INoteContainerProps {
   children: React.ReactNode;
@@ -15,8 +14,7 @@ interface INoteContainerProps {
 }
 
 const NoteContainer = ({ children, moveToNote, id }: INoteContainerProps) => {
-  const isDarkMode = useColorScheme() === "dark";
-  const currentTheme = isDarkMode ? dark : light;
+  const mode = useThemeColors();
   const [notes, setNotes] = useRecoilState<INote>(notesState);
 
   const deleteNote = async (key: number | string) => {
@@ -34,7 +32,7 @@ const NoteContainer = ({ children, moveToNote, id }: INoteContainerProps) => {
       <ButtonWrapper>
         <IconButton
           iconName="delete"
-          color={currentTheme.color.commonMiddleGray}
+          color={mode.color.commonMiddleGray}
           onPress={() => deleteNote(id)}
         />
       </ButtonWrapper>
@@ -47,7 +45,7 @@ export default NoteContainer;
 const Wrapper = styled.TouchableOpacity`
   flex: 1;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.color.memoContainer};
+  background-color: ${({ theme }) => theme.color.container};
   height: 100px;
   margin: 10px 20px;
   padding: 14px;

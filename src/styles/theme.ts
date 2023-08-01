@@ -15,7 +15,7 @@ const dark: DefaultTheme = {
   color: {
     white: "#ffffff",
     black: "#000",
-    memoContainer: "#222",
+    container: "#222",
     textColor: "#fff",
     bg: "#121212",
     modalBg: "#151515",
@@ -28,7 +28,7 @@ const light: DefaultTheme = {
   color: {
     black: "#000",
     white: "#ffffff",
-    memoContainer: "#eee",
+    container: "#eee",
     textColor: "#000",
     bg: "#ffffff",
     modalBg: "#eee",
