@@ -21,6 +21,8 @@ const SignIn = ({ navigation }: SignInProps) => {
   const [isShow, setIsShow] = useState(true);
   const mode = useThemeColors();
 
+  console.log(userInfo);
+
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
   const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
@@ -32,6 +34,8 @@ const SignIn = ({ navigation }: SignInProps) => {
     setUserInfo({ ...userInfo, [name]: text });
   };
 
+  // 로그인 성공하면 navigation 이동하는 로직 짜기
+
   const LOGIN_INPUT_PROPS = [
     {
       id: 1,
@@ -42,7 +46,7 @@ const SignIn = ({ navigation }: SignInProps) => {
       textContentType: "emailAddress",
       autoCapitalize: "none",
       keyboardType: "email-address",
-      placeholderTextColor: "ddd",
+      placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: null,
       isValid: isEmailValid,
@@ -58,7 +62,7 @@ const SignIn = ({ navigation }: SignInProps) => {
       textContentType: "password",
       autoCapitalize: "none",
       keyboardType: "default",
-      placeholderTextColor: "ddd",
+      placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: isShow ? (
         <IconButton
@@ -119,12 +123,7 @@ const SignIn = ({ navigation }: SignInProps) => {
             />
           )
         )}
-        <SubmitBtn
-          title="Sign In"
-          color="white"
-          disabled={isOkayLogin ? false : true}
-          onPress={login}
-        />
+        <SubmitBtn title="Sign In" onPress={isOkayLogin ? login : undefined} />
         <LinkWrapper onPress={() => navigation.navigate("SignUp")}>
           <LinkText>
             Don't have an account? <Link>Sign Up</Link>
@@ -139,8 +138,8 @@ export default SignIn;
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.color.bg};
   justify-content: center;
+  background-color: ${({ theme }) => theme.color.bg};
   padding: 0 20px;
 `;
 

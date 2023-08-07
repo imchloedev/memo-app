@@ -8,7 +8,7 @@ import NewNote from "@screens/NewNote";
 import Modal from "@screens/Modal";
 import IconButton from "@components/IconButton";
 import SignIn from "./screens/SignIn";
-import { getUserInfo } from "./api/storage";
+import { getToken } from "./api/storage";
 import SignUp from "./screens/SignUp";
 import { useRecoilState } from "recoil";
 import { tokenState } from "./recoil/atoms";
@@ -18,6 +18,8 @@ const Stack = createNativeStackNavigator<MainStackParamList>();
 const LoginStack = createNativeStackNavigator<LoginStackParamList>();
 
 const LoginStackNavi = () => {
+  const mode = useThemeColors();
+
   return (
     <Stack.Navigator>
       <LoginStack.Screen
@@ -31,7 +33,11 @@ const LoginStackNavi = () => {
         name="SignUp"
         component={SignUp}
         options={{
-          headerShown: true,
+          headerTitle: "Sign Up",
+          headerStyle: {
+            backgroundColor: mode.color.bg,
+          },
+          headerTintColor: mode.color.textColor,
         }}
       />
     </Stack.Navigator>
@@ -103,7 +109,7 @@ const Navigator = () => {
   const [token, setToken] = useRecoilState(tokenState);
 
   const getUser = async () => {
-    const result = await getUserInfo();
+    const result = await getToken();
     setToken(result);
   };
 

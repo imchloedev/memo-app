@@ -12,6 +12,7 @@ import { useColorScheme } from "react-native";
 import { dark, light } from "./styles/theme";
 import Navigator from "./Navigator";
 import SplashScreen from "react-native-splash-screen";
+import { styled } from "styled-components/native";
 
 function App(): JSX.Element {
   const theme = useColorScheme();
@@ -32,3 +33,7 @@ function App(): JSX.Element {
 }
 
 export default App;
+
+// const Layout = styled.View`
+//   background-color: ${({ theme }) => theme.color.bg};
+// `;

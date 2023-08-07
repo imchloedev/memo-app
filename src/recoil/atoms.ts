@@ -12,6 +12,11 @@ export interface IUser {
   password: string;
 }
 
+export interface IPersonalInfo extends IUser {
+  name: string;
+  birthDate: string;
+}
+
 export const textState = atom<string>({
   key: "textState",
   default: "",
@@ -38,4 +43,14 @@ export const userState = atom<IUser>({
 export const tokenState = atom<string>({
   key: "tokenState",
   default: "",
+});
+
+export const personalInfoState = atom<IPersonalInfo>({
+  key: "personalInfoState",
+  default: {
+    name: "",
+    username: "",
+    password: "",
+    birthDate: "",
+  },
 });

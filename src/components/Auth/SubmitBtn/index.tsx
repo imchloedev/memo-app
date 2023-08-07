@@ -1,23 +1,15 @@
 import React from "react";
-import { Button, TouchableOpacity } from "react-native";
 import { styled } from "styled-components/native";
 
 interface ISubmitBtnProps {
   title: string;
-  color: string;
-  disabled: boolean;
-  onPress: () => void;
+  onPress: (() => void) | undefined;
 }
 
-const SubmitBtn = ({ title, color, disabled, onPress }: ISubmitBtnProps) => {
+const SubmitBtn = ({ title, onPress }: ISubmitBtnProps) => {
   return (
-    <BtnContainer>
-      <Button
-        title={title}
-        color={color}
-        disabled={disabled}
-        onPress={onPress}
-      />
+    <BtnContainer onPress={onPress}>
+      <BtnText>{title}</BtnText>
     </BtnContainer>
   );
 };
@@ -29,4 +21,12 @@ const BtnContainer = styled.TouchableOpacity`
   border-radius: 100px;
   height: 44px;
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BtnText = styled.Text`
+  font-size: 16px;
+  color: ${({ theme }) => theme.color.white};
 `;

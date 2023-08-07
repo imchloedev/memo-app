@@ -11,36 +11,21 @@ interface IInputProps {
   placeholder: string;
   placeholderTextColor: string;
   handleChange: (txt: string, type: string) => void;
-  errMsg: string;
+  errMsg: string | "";
   child: React.ReactNode | null;
   isValid: boolean;
 }
 
-const Input = ({
-  value,
-  name,
-  textContentType,
-  autoCapitalize,
-  secureTextEntry,
-  placeholder,
-  placeholderTextColor,
-  handleChange,
-  errMsg,
-  child,
-  isValid,
-  label,
-}: IInputProps) => {
+const Input = (props: IInputProps) => {
+  const { name, handleChange, errMsg, child, isValid, label, ...others } =
+    props;
+
   return (
     <InputContainer>
       <InputLabel>{label}</InputLabel>
       <InputWrapper>
         <InputBox
-          value={value}
-          textContentType={textContentType}
-          autoCapitalize={autoCapitalize}
-          secureTextEntry={secureTextEntry}
-          placeholder={placeholder}
-          placeholderTextColor={placeholderTextColor}
+          {...others}
           onChangeText={(text: string) => handleChange(text, name)}
         />
         {child}

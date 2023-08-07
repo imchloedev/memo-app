@@ -1,17 +1,19 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { storeUserInfo } from "~/api/storage";
-import { IUser, userState } from "~/recoil/atoms";
+import { removeToken, storeToken, storeUser } from "~/api/storage";
+import { IUser } from "~/recoil/atoms";
 
-const useLogin = (userInfo: IUser) => {
-  const { username, password } = userInfo;
-  const setUserInfo = useSetRecoilState(userState);
-
+const useLogin = (user: IUser) => {
   const login = async () => {
-    await storeUserInfo();
-    setUserInfo(userInfo);
+    try {
+      await storeUser(user);
+      await storeToken();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const logout = () => {};
+  const logout = async () => {
+    await removeToken();
+  };
 
   return { login, logout };
 };
