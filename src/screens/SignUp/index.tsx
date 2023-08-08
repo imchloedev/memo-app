@@ -1,40 +1,45 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
-import { IPersonalInfo, personalInfoState } from "~/recoil/atoms";
+import { personalInfoState } from "~/recoil/atoms";
 import IconButton from "~/components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
 import Input from "~/components/Auth/Input";
 import SubmitBtn from "~/components/Auth/SubmitBtn";
-import { storeNewUsers } from "~/api/storage";
+import {
+  validateBirthDate,
+  validateEmail,
+  validatePassword,
+} from "~/utils/validation";
+import { signUp } from "~/lib/auth";
 
 const SignUp = () => {
   const [personalInfo, setPersonalInfo] = useRecoilState(personalInfoState);
-  const { name, username, password, birthDate } = personalInfo;
+  const { fullname, username, password, birthDate } = personalInfo;
   const [isShow, setIsShow] = useState(true);
   const mode = useThemeColors();
 
-  const emailRegEx =
-    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-  const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
-  const birthDateRegEx = /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/;
-  const isEmailValid = username.length > 1 && !emailRegEx.test(username);
-  const isPasswordValid = password.length > 1 && !passwordRegEx.test(password);
-  const isBirthDateValid =
-    birthDate.length > 1 && !birthDateRegEx.test(birthDate);
-  const isOkaySignUp =
-    emailRegEx.test(username) &&
-    passwordRegEx.test(password) &&
-    birthDateRegEx.test(birthDate);
+  const isOkaySignUp = !(
+    validateEmail(username) &&
+    validatePassword(password) &&
+    validateBirthDate(birthDate)
+  );
 
   const handleChange = (text: string, name: string) => {
     setPersonalInfo({ ...personalInfo, [name]: text });
   };
 
-  const signUp = async () => {
+  const onSignUp = async () => {
     try {
-      await storeNewUsers(personalInfo);
+      await signUp(username, password);
+      setPersonalInfo({
+        ...personalInfo,
+        fullname: "",
+        username: "",
+        password: "",
+        birthDate: "",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -45,7 +50,7 @@ const SignUp = () => {
       id: 1,
       label: "Name",
       name: "fullname",
-      value: name,
+      value: fullname,
       placeholder: "fullname",
       textContentType: "name",
       autoCapitalize: "words",
@@ -69,7 +74,7 @@ const SignUp = () => {
       placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: null,
-      isValid: isEmailValid,
+      isValid: validateEmail(username),
       secureTextEntry: false,
       errMsg: "Please enter a valid email address",
     },
@@ -98,7 +103,7 @@ const SignUp = () => {
         />
       ),
       secureTextEntry: isShow,
-      isValid: isPasswordValid,
+      isValid: validatePassword(password),
       errMsg: "Must be 8-20 characters in length",
     },
     {
@@ -113,7 +118,7 @@ const SignUp = () => {
       placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: null,
-      isValid: isBirthDateValid,
+      isValid: validateBirthDate(birthDate),
       secureTextEntry: false,
       errMsg: "Format ####/##/##",
     },
@@ -160,7 +165,7 @@ const SignUp = () => {
         )}
         <SubmitBtn
           title="Sign Up"
-          onPress={isOkaySignUp ? signUp : undefined}
+          onPress={isOkaySignUp ? onSignUp : undefined}
         />
       </View>
     </Container>

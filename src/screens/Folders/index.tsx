@@ -1,11 +1,11 @@
 import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { MainStackParamList } from "../@types";
 import { styled } from "styled-components/native";
+import Icon from "react-native-vector-icons/AntDesign";
+import { MainStackParamList } from "../@types";
 import { useRecoilValue } from "recoil";
 import { foldersState } from "~/recoil/atoms";
-import Icon from "react-native-vector-icons/AntDesign";
 import useThemeColors from "~/hooks/useThemeColors";
 
 type FoldersProps = NativeStackScreenProps<MainStackParamList, "Folders">;

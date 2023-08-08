@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { MainStackParamList } from "../@types";
 import { INote, notesFilterState, notesState } from "@recoil/atoms";
 import { Container, SaveButton, Textarea } from "../NewNote";
-import { getNotes, storeNotes } from "@api/storage";
+import { getNotes, storeNotes } from "~/lib/storage";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 

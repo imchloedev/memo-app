@@ -1,7 +1,6 @@
 #import "AppDelegate.h"
 #import "RNSplashScreen.h"
-#import FirebaseCore; // 추가
-
+#import <Firebase.h> // 추가
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -13,14 +12,12 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   
+  // 추가 - 초기화
+  [FIRApp configure];
+  
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
   
-  // 추가
-  if ([FIRApp defaultApp] == nil) {
-    [FIRApp configure];
-  }
-
   return YES;
 }
 

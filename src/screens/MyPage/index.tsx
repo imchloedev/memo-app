@@ -1,33 +1,18 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import React from "react";
+import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
-import { getCurrentUser } from "~/api/storage";
-import useLogin from "~/hooks/useLogin";
-import { tokenState, userState } from "~/recoil/atoms";
-import { MainStackParamList } from "../@types";
 import SubmitBtn from "~/components/Auth/SubmitBtn";
+import { onSignOut } from "~/lib/auth";
 
-type MyPageProp = NativeStackScreenProps<MainStackParamList, "MyPage">;
+const MyPage = () => {
+  const currentUser = auth().currentUser;
 
-const MyPage = ({ navigation }: MyPageProp) => {
-  const [user, setUser] = useRecoilState(userState);
-  const { logout } = useLogin(user);
-  const setToken = useSetRecoilState(tokenState);
-
-  const getUser = async () => {
-    const res = await getCurrentUser();
-    setUser(res);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, [navigation]);
-
-  const leave = async () => {
-    await logout;
-    setToken(null);
+  const onLeave = async () => {
+    try {
+      await onSignOut();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -35,8 +20,8 @@ const MyPage = ({ navigation }: MyPageProp) => {
       <Title>My Page</Title>
       <Wrapper>
         <HelloText>Hello!</HelloText>
-        <Username>{user.username}</Username>
-        <SubmitBtn title="Log out" onPress={leave} />
+        <Username>{currentUser?.email}</Username>
+        <SubmitBtn title="Log out" onPress={onLeave} />
       </Wrapper>
     </Container>
   );

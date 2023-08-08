@@ -13,7 +13,7 @@ export interface IUser {
 }
 
 export interface IPersonalInfo extends IUser {
-  name: string;
+  fullname: string;
   birthDate: string;
 }
 
@@ -49,15 +49,10 @@ export const userState = atom<IUser>({
   },
 });
 
-export const tokenState = atom<string | null>({
-  key: "tokenState",
-  default: "",
-});
-
 export const personalInfoState = atom<IPersonalInfo>({
   key: "personalInfoState",
   default: {
-    name: "",
+    fullname: "",
     username: "",
     password: "",
     birthDate: "",

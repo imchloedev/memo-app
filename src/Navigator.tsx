@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -14,9 +14,11 @@ import SignIn from "@screens/SignIn";
 import SignUp from "@screens/SignUp";
 import Folders from "@screens/Folders";
 import IconButton from "@components/IconButton";
-import { tokenState } from "./recoil/atoms";
+import { currentUserState, tokenState } from "./recoil/atoms";
 import useThemeColors from "./hooks/useThemeColors";
-import { getToken } from "./api/storage";
+import { getToken } from "./lib/storage";
+import { subscribeAuth } from "./lib/auth";
+import auth from "@react-native-firebase/auth";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 const LoginStack = createNativeStackNavigator<LoginStackParamList>();
@@ -163,19 +165,11 @@ const TabNavi = () => {
 };
 
 const Navigator = () => {
-  const [token, setToken] = useRecoilState(tokenState);
-
-  useEffect(() => {
-    const loadToken = async () => {
-      const res = await getToken();
-      setToken(res);
-    };
-    loadToken();
-  }, []);
+  const currentUser = auth().currentUser;
 
   return (
     <NavigationContainer>
-      {token ? <TabNavi /> : <LoginStackNavi />}
+      {currentUser ? <TabNavi /> : <LoginStackNavi />}
     </NavigationContainer>
   );
 };

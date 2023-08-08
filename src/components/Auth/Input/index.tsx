@@ -49,7 +49,7 @@ const InputLabel = styled.Text`
 const InputWrapper = styled.View`
   margin-top: 10px;
   background-color: ${({ theme }) => theme.color.container};
-  border-radius: 10px;
+  border-radius: 18px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -59,7 +59,7 @@ const InputWrapper = styled.View`
 
 const InputBox = styled.TextInput`
   flex-basis: 90%;
-  height: 24px;
+  height: 34px;
   color: ${({ theme }) => theme.color.textColor};
 `;
 

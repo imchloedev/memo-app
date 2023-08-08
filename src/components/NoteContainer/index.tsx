@@ -4,7 +4,7 @@ import { styled } from "styled-components/native";
 import { useRecoilState } from "recoil";
 import IconButton from "@components/IconButton";
 import { INote, notesState } from "@recoil/atoms";
-import { storeNotes } from "@api/storage";
+import { storeNotes } from "~/lib/storage";
 import useThemeColors from "~/hooks/useThemeColors";
 
 interface INoteContainerProps {

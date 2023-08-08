@@ -1,44 +1,35 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
-import useLogin from "~/hooks/useLogin";
-import { tokenState, userState } from "~/recoil/atoms";
+import { userState } from "~/recoil/atoms";
 import { LoginStackParamList } from "../@types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import IconButton from "~/components/IconButton";
 import Input from "~/components/Auth/Input";
 import SubmitBtn from "~/components/Auth/SubmitBtn";
 import useThemeColors from "~/hooks/useThemeColors";
-import { storeToken } from "~/api/storage";
+import { validateEmail, validatePassword } from "~/utils/validation";
+import { signIn } from "~/lib/auth";
 
 type SignInProps = NativeStackScreenProps<LoginStackParamList, "SignIn">;
 
 const SignIn = ({ navigation }: SignInProps) => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const { username, password } = userInfo;
-  const { login } = useLogin(userInfo);
   const [isShow, setIsShow] = useState(true);
   const mode = useThemeColors();
-  const setToken = useSetRecoilState(tokenState);
 
-  const emailRegEx =
-    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-  const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
-  const isEmailValid = username.length > 1 && !emailRegEx.test(username);
-  const isPasswordValid = password.length > 1 && !passwordRegEx.test(password);
-  const isOkayLogin = emailRegEx.test(username) && passwordRegEx.test(password);
+  const isOkayLogin = !(validateEmail(username) && validatePassword(password));
 
   const handleChange = (text: string, name: string) => {
     setUserInfo({ ...userInfo, [name]: text });
   };
 
   const onLogin = async () => {
-    const newToken = Math.random().toString(16).slice(2);
     try {
-      await login();
-      await storeToken(newToken);
-      setToken(newToken);
+      await signIn(username, password);
+      setUserInfo({ ...userInfo, username: "", password: "" });
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +48,7 @@ const SignIn = ({ navigation }: SignInProps) => {
       placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: null,
-      isValid: isEmailValid,
+      isValid: validateEmail(username),
       secureTextEntry: false,
       errMsg: "Please enter a valid email address",
     },
@@ -86,7 +77,7 @@ const SignIn = ({ navigation }: SignInProps) => {
         />
       ),
       secureTextEntry: isShow,
-      isValid: isPasswordValid,
+      isValid: validatePassword(password),
       errMsg: "Must be 8-20 characters in length",
     },
   ];

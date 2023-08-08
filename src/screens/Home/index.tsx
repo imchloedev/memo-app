@@ -8,7 +8,7 @@ import NoteContainer from "@components/NoteContainer";
 import { MainStackParamList } from "../@types/index";
 import { notesFilterState, notesState } from "@recoil/atoms";
 import { getNoteDate } from "~/utils/date";
-import { getNotes } from "@api/storage";
+import { getNotes } from "~/lib/storage";
 import { INoteInfo, filteredNotesList } from "@recoil/selectors";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;

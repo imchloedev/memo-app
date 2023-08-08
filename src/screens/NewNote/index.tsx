@@ -5,7 +5,7 @@ import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { MainStackParamList } from "../@types";
 import { notesFilterState, notesState, textState } from "@recoil/atoms";
-import { storeNotes } from "@api/storage";
+import { storeNotes } from "~/lib/storage";
 
 type NewNoteProps = NativeStackScreenProps<MainStackParamList, "Note">;
 

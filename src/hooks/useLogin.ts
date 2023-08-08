@@ -1,4 +1,4 @@
-import { removeToken, storeUser } from "~/api/storage";
+import { removeToken, storeUser } from "~/lib/storage";
 import { IUser } from "~/recoil/atoms";
 
 const useLogin = (user: IUser) => {
