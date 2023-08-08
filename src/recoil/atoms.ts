@@ -32,6 +32,15 @@ export const notesFilterState = atom<string>({
   default: "Notes",
 });
 
+export const foldersState = atom({
+  key: "foldersState",
+  default: [
+    { id: 1, name: "Notes" },
+    { id: 2, name: "Work" },
+    { id: 3, name: "Wish List" },
+  ],
+});
+
 export const userState = atom<IUser>({
   key: "userState",
   default: {
@@ -40,7 +49,7 @@ export const userState = atom<IUser>({
   },
 });
 
-export const tokenState = atom<string>({
+export const tokenState = atom<string | null>({
   key: "tokenState",
   default: "",
 });

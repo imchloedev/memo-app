@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "RNSplashScreen.h"
+#import FirebaseCore; // 추가
 
 #import <React/RCTBundleURLProvider.h>
 
@@ -14,6 +15,11 @@
   
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
+  
+  // 추가
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
 
   return YES;
 }

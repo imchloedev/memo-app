@@ -26,7 +26,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
 
     setNotes(newNotes);
     await storeNotes(newNotes);
-    navigation.navigate("Home");
+    navigation.navigate("Home", { folder: filter });
     setText("");
   };
 

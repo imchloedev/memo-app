@@ -29,7 +29,7 @@ const Edit = ({ route, navigation }: ViewProps) => {
     delete updated[noteId];
     setNotes(updated);
     await storeNotes(updated);
-    navigation.navigate("Home");
+    navigation.navigate("Home", { folder: filter });
   };
 
   useEffect(() => {

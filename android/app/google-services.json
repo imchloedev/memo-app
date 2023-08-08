@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "28911853453",
+    "project_id": "memoapp-3bb8e",
+    "storage_bucket": "memoapp-3bb8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28911853453:android:778d0a2aad1a1e2cb8e7c4",
+        "android_client_info": {
+          "package_name": "com.firstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28911853453-63aood9mev0e5hq94o68bshfgs31kdsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzjx8R3nuITctYyXqHgvPMi0ODQBN1vmk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28911853453-63aood9mev0e5hq94o68bshfgs31kdsv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28911853453-hh0j3e4v3ucubahvqtjr3020s73sr5np.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.FirstApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

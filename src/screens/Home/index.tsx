@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Animated } from "react-native";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import HomeHeaderTitle from "@components/HomeHeaderTitle";
 import NoteContainer from "@components/NoteContainer";
 import { MainStackParamList } from "../@types/index";
@@ -13,10 +13,12 @@ import { INoteInfo, filteredNotesList } from "@recoil/selectors";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
-const Home = ({ navigation }: HomeProps) => {
+const Home = ({ navigation, route }: HomeProps) => {
+  console.log(navigation);
+  const { folder } = route.params;
   const scrollY = useRef(new Animated.Value(0)).current;
   const setNotes = useSetRecoilState(notesState);
-  const filter = useRecoilValue(notesFilterState);
+  const [filter, setFilter] = useRecoilState(notesFilterState);
   const filteredNotes = useRecoilValue(filteredNotesList);
 
   const loadNotes = async () => {
@@ -47,6 +49,10 @@ const Home = ({ navigation }: HomeProps) => {
   useEffect(() => {
     loadNotes();
   }, [filter]);
+
+  useEffect(() => {
+    setFilter(folder);
+  }, [folder]);
 
   const moveToNote = (id: string | number) => {
     navigation.navigate("Edit", { noteId: id });

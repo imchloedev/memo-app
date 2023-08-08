@@ -12,12 +12,22 @@ export const storeNotes = async (newData: INote) => {
   await AsyncStorage.setItem("@notes", JSON.stringify(newData));
 };
 
+export const getCurrentUser = async () => {
+  try {
+    const data = (await AsyncStorage.getItem("@user")) || "{}";
+    const res = await JSON.parse(data);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // 로그인한 유저 정보 저장
 export const storeUser = async (user: IUser) => {
   await AsyncStorage.setItem("@user", JSON.stringify(user));
 };
 
-// 회원가입한 유저 정보 저장
+// 회원가입한 유저 정보 저장 ([])
 export const storeNewUsers = async (newUser: IPersonalInfo) => {
   await AsyncStorage.setItem("@users", JSON.stringify(newUser));
 };
@@ -32,8 +42,7 @@ export const getToken = async () => {
   }
 };
 
-export const storeToken = async () => {
-  const token = Math.random().toString(16).slice(2);
+export const storeToken = async (token: string) => {
   await AsyncStorage.setItem("token", JSON.stringify(token));
 };
 

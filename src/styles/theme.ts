@@ -19,6 +19,8 @@ const dark: DefaultTheme = {
     textColor: "#fff",
     bg: "#121212",
     modalBg: "#151515",
+    separator: "#333",
+    iconColor: "#999",
     ...common.color,
   },
 };
@@ -32,6 +34,8 @@ const light: DefaultTheme = {
     textColor: "#000",
     bg: "#ffffff",
     modalBg: "#eee",
+    separator: "#ddd",
+    iconColor: "#999",
     ...common.color,
   },
 };

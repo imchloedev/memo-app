@@ -32,7 +32,7 @@ const NoteContainer = ({ children, moveToNote, id }: INoteContainerProps) => {
       <ButtonWrapper>
         <IconButton
           iconName="delete"
-          color={mode.color.commonMiddleGray}
+          color={mode.color.iconColor}
           onPress={() => deleteNote(id)}
         />
       </ButtonWrapper>

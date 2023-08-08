@@ -13,9 +13,12 @@ import { dark, light } from "./styles/theme";
 import Navigator from "./Navigator";
 import SplashScreen from "react-native-splash-screen";
 import { styled } from "styled-components/native";
+import { PaperProvider, useTheme } from "react-native-paper";
 
 function App(): JSX.Element {
   const theme = useColorScheme();
+  const paperTheme = useTheme();
+  paperTheme.colors.secondaryContainer = "transparent";
 
   useEffect(() => {
     setTimeout(() => {
@@ -25,9 +28,11 @@ function App(): JSX.Element {
 
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme === "dark" ? dark : light}>
-        <Navigator />
-      </ThemeProvider>
+      <PaperProvider>
+        <ThemeProvider theme={theme === "dark" ? dark : light}>
+          <Navigator />
+        </ThemeProvider>
+      </PaperProvider>
     </RecoilRoot>
   );
 }

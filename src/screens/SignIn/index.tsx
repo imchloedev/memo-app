@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, useColorScheme } from "react-native";
-import { useRecoilState } from "recoil";
+import { View } from "react-native";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { styled } from "styled-components/native";
 import useLogin from "~/hooks/useLogin";
-import { userState } from "~/recoil/atoms";
+import { tokenState, userState } from "~/recoil/atoms";
 import { LoginStackParamList } from "../@types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import IconButton from "~/components/IconButton";
 import Input from "~/components/Auth/Input";
 import SubmitBtn from "~/components/Auth/SubmitBtn";
-import { dark, light } from "~/styles/theme";
 import useThemeColors from "~/hooks/useThemeColors";
+import { storeToken } from "~/api/storage";
 
 type SignInProps = NativeStackScreenProps<LoginStackParamList, "SignIn">;
 
@@ -20,8 +20,7 @@ const SignIn = ({ navigation }: SignInProps) => {
   const { login } = useLogin(userInfo);
   const [isShow, setIsShow] = useState(true);
   const mode = useThemeColors();
-
-  console.log(userInfo);
+  const setToken = useSetRecoilState(tokenState);
 
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
@@ -34,7 +33,16 @@ const SignIn = ({ navigation }: SignInProps) => {
     setUserInfo({ ...userInfo, [name]: text });
   };
 
-  // 로그인 성공하면 navigation 이동하는 로직 짜기
+  const onLogin = async () => {
+    const newToken = Math.random().toString(16).slice(2);
+    try {
+      await login();
+      await storeToken(newToken);
+      setToken(newToken);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const LOGIN_INPUT_PROPS = [
     {
@@ -123,7 +131,10 @@ const SignIn = ({ navigation }: SignInProps) => {
             />
           )
         )}
-        <SubmitBtn title="Sign In" onPress={isOkayLogin ? login : undefined} />
+        <SubmitBtn
+          title="Sign In"
+          onPress={isOkayLogin ? onLogin : undefined}
+        />
         <LinkWrapper onPress={() => navigation.navigate("SignUp")}>
           <LinkText>
             Don't have an account? <Link>Sign Up</Link>
