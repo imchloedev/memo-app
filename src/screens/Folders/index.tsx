@@ -3,10 +3,10 @@ import { View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import Icon from "react-native-vector-icons/AntDesign";
-import { MainStackParamList } from "../@types";
 import { useRecoilValue } from "recoil";
-import { foldersState } from "~/recoil/atoms";
+import { foldersState, noteStatesState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
+import { MainStackParamList } from "../@types";
 
 type FoldersProps = NativeStackScreenProps<MainStackParamList, "Folders">;
 
@@ -14,12 +14,16 @@ const Folders = ({ navigation }: FoldersProps) => {
   const folders = useRecoilValue(foldersState);
   const mode = useThemeColors();
 
+  const stats = useRecoilValue(noteStatesState);
+
+  console.log(stats);
+
   return (
     <Container>
       <Title>Folders</Title>
       <Wrapper>
         {folders.map(({ id, name }) => (
-          <View>
+          <View key={id}>
             <FolderBox
               key={id}
               onPress={() => navigation.navigate("Home", { folder: name })}

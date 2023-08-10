@@ -67,3 +67,7 @@ yarn-error.log
 
 # environment variables
 .env
+
+# secret
+google-services.json
+GoogleService-Info.plist

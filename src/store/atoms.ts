@@ -1,10 +1,11 @@
 import { atom } from "recoil";
 
 export interface INote {
-  [key: number | string]: {
-    text: string;
-    folder: string;
-  };
+  id?: string;
+  createdAt: number;
+  creatorId: string | undefined;
+  text: string;
+  folder: string;
 }
 
 export interface IUser {
@@ -22,9 +23,9 @@ export const textState = atom<string>({
   default: "",
 });
 
-export const notesState = atom<INote>({
+export const notesState = atom<INote[]>({
   key: "notesState",
-  default: {},
+  default: [],
 });
 
 export const notesFilterState = atom<string>({

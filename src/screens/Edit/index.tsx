@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { MainStackParamList } from "../@types";
-import { INote, notesFilterState, notesState } from "@recoil/atoms";
+import { useRecoilValue } from "recoil";
+import { MainStackParamList } from "screens/@types";
+import { notesState, notesFilterState } from "~/store";
+import { memosCollection } from "~/lib";
 import { Container, SaveButton, Textarea } from "../NewNote";
-import { getNotes, storeNotes } from "~/lib/storage";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
 const Edit = ({ route, navigation }: ViewProps) => {
   const { noteId } = route.params;
-  const [notes, setNotes] = useRecoilState(notesState);
   const [editedText, setEditedText] = useState("");
+
+  const notes = useRecoilValue(notesState);
   const filter = useRecoilValue(notesFilterState);
 
-  const updateNote = async () => {
-    const res = await getNotes();
+  const note = notes.filter((note) => note.id == noteId);
 
-    if (res[noteId].text == editedText || editedText === "") {
+  const updateNote = async () => {
+    if (note[0].text == editedText || editedText === "") {
       return;
     }
 
-    const updated: INote = {
-      [Date.now()]: { text: editedText, folder: filter },
-      ...notes,
+    const updated = {
+      createdAt: Date.now(),
+      text: editedText,
     };
 
-    delete updated[noteId];
-    setNotes(updated);
-    await storeNotes(updated);
+    await memosCollection.doc(note[0].id).update(updated);
+
     navigation.navigate("Home", { folder: filter });
   };
 
   useEffect(() => {
-    setEditedText(notes[noteId].text);
+    setEditedText(note[0].text);
   }, []);
 
   useEffect(() => {

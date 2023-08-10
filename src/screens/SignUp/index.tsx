@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
-import { personalInfoState } from "~/recoil/atoms";
-import IconButton from "~/components/IconButton";
+import IconButton from "components/IconButton";
+import Input from "components/Auth/Input";
+import SubmitBtn from "components/Auth/SubmitBtn";
+import { personalInfoState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
-import Input from "~/components/Auth/Input";
-import SubmitBtn from "~/components/Auth/SubmitBtn";
-import {
-  validateBirthDate,
-  validateEmail,
-  validatePassword,
-} from "~/utils/validation";
-import { signUp } from "~/lib/auth";
+import { validateBirthDate, validateEmail, validatePassword } from "~/utils";
+import { signUp, usersCollection } from "~/lib";
 
 const SignUp = () => {
   const [personalInfo, setPersonalInfo] = useRecoilState(personalInfoState);
@@ -33,6 +29,9 @@ const SignUp = () => {
   const onSignUp = async () => {
     try {
       await signUp(username, password);
+      await usersCollection.add({
+        ...personalInfo,
+      });
       setPersonalInfo({
         ...personalInfo,
         fullname: "",

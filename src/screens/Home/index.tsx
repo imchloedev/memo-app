@@ -1,84 +1,83 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { Animated } from "react-native";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import HomeHeaderTitle from "@components/HomeHeaderTitle";
-import NoteContainer from "@components/NoteContainer";
+import { useFocusEffect } from "@react-navigation/native";
+import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import auth from "@react-native-firebase/auth";
+import HomeHeaderTitle from "components/HomeHeaderTitle";
+import NoteItem from "components/NoteItem";
+import Spinner from "components/Spinner";
+import { notesFilterState, notesState, filteredNotesList } from "~/store";
 import { MainStackParamList } from "../@types/index";
-import { notesFilterState, notesState } from "@recoil/atoms";
-import { getNoteDate } from "~/utils/date";
-import { getNotes } from "~/lib/storage";
-import { INoteInfo, filteredNotesList } from "@recoil/selectors";
+import { getNotes } from "apis/memo";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
 const Home = ({ navigation, route }: HomeProps) => {
-  console.log(navigation);
   const { folder } = route.params;
   const scrollY = useRef(new Animated.Value(0)).current;
+  const currentUser = auth().currentUser;
+
   const setNotes = useSetRecoilState(notesState);
   const [filter, setFilter] = useRecoilState(notesFilterState);
   const filteredNotes = useRecoilValue(filteredNotesList);
-
-  const loadNotes = async () => {
-    const result = await getNotes();
-    setNotes(result);
-  };
 
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     { useNativeDriver: false }
   );
 
-  const animatedHeaderTitle = () => {
-    const opacity = scrollY.interpolate({
-      inputRange: [0, 80],
-      outputRange: [0, 1],
-      extrapolate: "clamp",
-    });
-    return navigation.setOptions({
-      headerTitle: () => <HomeHeaderTitle title={filter} styles={opacity} />,
-    });
+  const fetchNotes = async () => {
+    try {
+      const result = await getNotes(currentUser);
+      setNotes(result);
+    } catch (error) {
+      console.error("Error fetching memos:", error);
+    }
   };
 
-  useEffect(() => {
-    animatedHeaderTitle();
-  }, [navigation, scrollY, filter]);
-
-  useEffect(() => {
-    loadNotes();
-  }, [filter]);
-
-  useEffect(() => {
-    setFilter(folder);
-  }, [folder]);
-
-  const moveToNote = (id: string | number) => {
+  const moveToNote = (id: string | undefined) => {
     navigation.navigate("Edit", { noteId: id });
   };
+
+  useEffect(() => {
+    const animatedHeaderTitle = () => {
+      const opacity = scrollY.interpolate({
+        inputRange: [0, 80],
+        outputRange: [0, 1],
+        extrapolate: "clamp",
+      });
+      return navigation.setOptions({
+        headerTitle: () => <HomeHeaderTitle title={folder} styles={opacity} />,
+      });
+    };
+
+    animatedHeaderTitle();
+  }, [scrollY, navigation]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFilter(folder);
+      fetchNotes();
+    }, [])
+  );
 
   return (
     <Container>
       <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
         <Title>{filter}</Title>
-        {filteredNotes &&
-          (filteredNotes.length > 0 ? (
-            filteredNotes.map(([date, note]) => {
-              const info = note as INoteInfo;
-              return (
-                <NoteContainer key={date} id={date} moveToNote={moveToNote}>
-                  <NoteTitleWrapper>
-                    <NoteTitle>{info.text}</NoteTitle>
-                  </NoteTitleWrapper>
-                  <NoteDate>{getNoteDate(Number(date))}</NoteDate>
-                  <NoteFolder>{info.folder}</NoteFolder>
-                </NoteContainer>
-              );
-            })
+        {filteredNotes ? (
+          filteredNotes.length > 0 ? (
+            filteredNotes.map((note) => (
+              <NoteItem key={note.id} note={note} moveToNote={moveToNote} />
+            ))
           ) : (
             <GuideText>No Notes here yet.</GuideText>
-          ))}
+          )
+        ) : (
+          <Spinner />
+        )}
       </Animated.ScrollView>
     </Container>
   );
@@ -97,26 +96,6 @@ const Title = styled.Text`
   padding: 0 20px;
   font-weight: bold;
   color: ${({ theme }) => theme.color.textColor};
-`;
-
-const NoteTitleWrapper = styled.View`
-  height: 20px;
-  overflow: hidden;
-`;
-
-const NoteTitle = styled.Text.attrs({
-  ellipsizeMode: "tail",
-  numberOfLines: 2,
-})`
-  color: ${({ theme }) => theme.color.textColor};
-`;
-
-const NoteDate = styled.Text`
-  color: #666;
-`;
-
-const NoteFolder = styled.Text`
-  color: #414141;
 `;
 
 const GuideText = styled.Text`

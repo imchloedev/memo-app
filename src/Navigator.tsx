@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { useRecoilState } from "recoil";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { LoginStackParamList, MainStackParamList } from "@screens/@types";
-import Home from "@screens/Home";
-import Edit from "@screens/Edit";
-import NewNote from "@screens/NewNote";
-import Modal from "@screens/Modal";
-import MyPage from "@screens/MyPage";
-import SignIn from "@screens/SignIn";
-import SignUp from "@screens/SignUp";
-import Folders from "@screens/Folders";
-import IconButton from "@components/IconButton";
-import { currentUserState, tokenState } from "./recoil/atoms";
-import useThemeColors from "./hooks/useThemeColors";
-import { getToken } from "./lib/storage";
-import { subscribeAuth } from "./lib/auth";
+import { LoginStackParamList, MainStackParamList } from "screens/@types";
 import auth from "@react-native-firebase/auth";
+import Home from "screens/Home";
+import Edit from "screens/Edit";
+import NewNote from "screens/NewNote";
+import MyPage from "screens/MyPage";
+import SignIn from "screens/SignIn";
+import SignUp from "screens/SignUp";
+import Folders from "screens/Folders";
+import IconButton from "components/IconButton";
+import useThemeColors from "~/hooks/useThemeColors";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 const LoginStack = createNativeStackNavigator<LoginStackParamList>();
@@ -55,7 +50,7 @@ const HomeStackNavi = () => {
   const mode = useThemeColors();
 
   return (
-    <Stack.Navigator initialRouteName="Folders">
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="Home"
         component={Home}
@@ -95,7 +90,7 @@ const HomeStackNavi = () => {
       <Stack.Screen
         name="Edit"
         component={Edit}
-        initialParams={{ noteId: 1 }}
+        initialParams={{ noteId: "note" }}
         options={{
           title: "",
           headerStyle: {
@@ -108,11 +103,6 @@ const HomeStackNavi = () => {
         name="Folders"
         component={Folders}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Modal"
-        component={Modal}
-        options={{ headerShown: false, presentation: "transparentModal" }}
       />
     </Stack.Navigator>
   );
@@ -151,7 +141,7 @@ const TabNavi = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
+        name="Account"
         component={MyPageStackNavi}
         options={{
           tabBarLabel: "My Page",

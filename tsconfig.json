@@ -14,13 +14,12 @@
     "baseUrl": "./src",
     "paths": {
       "~/*": ["./*"],
-      "@components/*": ["components/*"],
-      "@screens/*": ["screens/*"],
-      "@assets/*": ["assets/*"],
-      "@styles/*": ["styles/*"],
-      "@api/*": ["api/*"],
-      "@utils/*": ["utils/*"],
-      "@recoil/*": ["recoil/*"]
+      "components/*": ["components/*"],
+      "screens/*": ["screens/*"],
+      "assets/*": ["assets/*"],
+      "styles/*": ["styles/*"],
+      "apis/*": ["apis/*"],
+      "utils/*": ["utils/*"]
     }
   },
   "exclude": [

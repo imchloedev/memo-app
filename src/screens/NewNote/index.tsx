@@ -3,31 +3,29 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
+import auth from "@react-native-firebase/auth";
 import { MainStackParamList } from "../@types";
-import { notesFilterState, notesState, textState } from "@recoil/atoms";
-import { storeNotes } from "~/lib/storage";
+import { INote, notesFilterState, textState } from "~/store";
+import { memosCollection } from "~/lib";
 
 type NewNoteProps = NativeStackScreenProps<MainStackParamList, "Note">;
 
 const NewNote = ({ navigation }: NewNoteProps) => {
   const [text, setText] = useRecoilState(textState);
-  const [notes, setNotes] = useRecoilState(notesState);
   const filter = useRecoilValue(notesFilterState);
+  const currentUser = auth().currentUser;
 
   const addNote = async () => {
-    if (text === "" || text === " ") {
-      return;
-    }
-
-    const newNotes = {
-      [Date.now()]: { text: text, folder: filter },
-      ...notes,
+    const newNote: INote = {
+      createdAt: Date.now(),
+      creatorId: currentUser?.uid,
+      text,
+      folder: filter,
     };
 
-    setNotes(newNotes);
-    await storeNotes(newNotes);
-    navigation.navigate("Home", { folder: filter });
+    await memosCollection.add(newNote);
     setText("");
+    navigation.navigate("Home", { folder: filter });
   };
 
   useEffect(() => {

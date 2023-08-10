@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
-import { userState } from "~/recoil/atoms";
 import { LoginStackParamList } from "../@types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import IconButton from "~/components/IconButton";
-import Input from "~/components/Auth/Input";
-import SubmitBtn from "~/components/Auth/SubmitBtn";
+import IconButton from "components/IconButton";
+import Input from "components/Auth/Input";
+import SubmitBtn from "components/Auth/SubmitBtn";
+import { userState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
-import { validateEmail, validatePassword } from "~/utils/validation";
-import { signIn } from "~/lib/auth";
+import { signIn } from "~/lib";
+import { validateEmail, validatePassword } from "~/utils";
 
 type SignInProps = NativeStackScreenProps<LoginStackParamList, "SignIn">;
 

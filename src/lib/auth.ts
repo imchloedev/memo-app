@@ -1,7 +1,6 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export const signIn = (email: string, password: string) => {
-  console.log("성공");
   return auth().signInWithEmailAndPassword(email, password);
 };
 

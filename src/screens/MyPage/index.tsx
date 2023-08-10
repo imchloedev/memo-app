@@ -1,8 +1,8 @@
 import React from "react";
 import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
-import SubmitBtn from "~/components/Auth/SubmitBtn";
-import { onSignOut } from "~/lib/auth";
+import SubmitBtn from "components/Auth/SubmitBtn";
+import { onSignOut } from "~/lib";
 
 const MyPage = () => {
   const currentUser = auth().currentUser;
@@ -17,9 +17,8 @@ const MyPage = () => {
 
   return (
     <Container>
-      <Title>My Page</Title>
+      <Title>Account</Title>
       <Wrapper>
-        <HelloText>Hello!</HelloText>
         <Username>{currentUser?.email}</Username>
         <SubmitBtn title="Log out" onPress={onLeave} />
       </Wrapper>

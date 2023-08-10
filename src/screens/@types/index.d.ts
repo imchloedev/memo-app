@@ -1,7 +1,7 @@
 export type MainStackParamList = {
   Home: { folder: string };
   Note: undefined;
-  Edit: { noteId: number | string };
+  Edit: { noteId: undefined | string };
   Modal: undefined;
   Folders: undefined;
   MyPage: undefined;

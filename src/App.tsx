@@ -21,7 +21,7 @@ function App(): JSX.Element {
   const paperTheme = useTheme();
   paperTheme.colors.secondaryContainer = "transparent";
   const [initializing, setInitializing] = useState(true);
-  const [_, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleAuthState = (user: any) => {
     if (user) {
