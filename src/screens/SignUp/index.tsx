@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
 import IconButton from "components/IconButton";
@@ -7,13 +7,20 @@ import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import { personalInfoState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
-import { validateBirthDate, validateEmail, validatePassword } from "~/utils";
-import { signUp, usersCollection } from "~/lib";
+import {
+  showAlert,
+  validateBirthDate,
+  validateEmail,
+  validatePassword,
+} from "~/utils";
+import { handleFirebaseAuthError, isFirebaseAuthError, signUp } from "~/apis";
+import { usersCollection } from "~/lib";
 
 const SignUp = () => {
   const [personalInfo, setPersonalInfo] = useRecoilState(personalInfoState);
   const { fullname, username, password, birthDate } = personalInfo;
   const [isShow, setIsShow] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const mode = useThemeColors();
 
   const isOkaySignUp = !(
@@ -27,6 +34,7 @@ const SignUp = () => {
   };
 
   const onSignUp = async () => {
+    setIsLoading(true);
     try {
       await signUp(username, password);
       await usersCollection.add({
@@ -39,8 +47,13 @@ const SignUp = () => {
         password: "",
         birthDate: "",
       });
-    } catch (err) {
-      console.log(err);
+    } catch (error: unknown) {
+      if (isFirebaseAuthError(error)) {
+        const errorMsg = handleFirebaseAuthError(error);
+        showAlert("Failed", errorMsg);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -110,7 +123,7 @@ const SignUp = () => {
       label: "Birth Date",
       name: "birthDate",
       value: birthDate,
-      placeholder: "email",
+      placeholder: "0000/00/00",
       textContentType: "none",
       autoCapitalize: "none",
       keyboardType: "numeric",
@@ -125,48 +138,51 @@ const SignUp = () => {
 
   return (
     <Container>
-      <TitleWrapper>
-        <Title>Sign Up</Title>
-      </TitleWrapper>
-      <View>
-        {SIGNUP_INPUT_PROPS.map(
-          ({
-            id,
-            value,
-            name,
-            label,
-            textContentType,
-            autoCapitalize,
-            secureTextEntry,
-            placeholder,
-            placeholderTextColor,
-            handleChange,
-            errMsg,
-            child,
-            isValid,
-          }) => (
-            <Input
-              key={id}
-              name={name}
-              value={value}
-              placeholder={placeholder}
-              placeholderTextColor={placeholderTextColor}
-              label={label}
-              textContentType={textContentType}
-              autoCapitalize={autoCapitalize}
-              secureTextEntry={secureTextEntry}
-              handleChange={handleChange}
-              errMsg={errMsg}
-              child={child}
-              isValid={isValid}
-            />
-          )
-        )}
-        <SubmitBtn
-          title="Sign Up"
-          onPress={isOkaySignUp ? onSignUp : undefined}
-        />
-      </View>
+      <ScrollView>
+        <TitleWrapper>
+          <Title>Sign Up</Title>
+        </TitleWrapper>
+        <View>
+          {SIGNUP_INPUT_PROPS.map(
+            ({
+              id,
+              value,
+              name,
+              label,
+              textContentType,
+              autoCapitalize,
+              secureTextEntry,
+              placeholder,
+              placeholderTextColor,
+              handleChange,
+              errMsg,
+              child,
+              isValid,
+            }) => (
+              <Input
+                key={id}
+                name={name}
+                value={value}
+                placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
+                label={label}
+                textContentType={textContentType}
+                autoCapitalize={autoCapitalize}
+                secureTextEntry={secureTextEntry}
+                handleChange={handleChange}
+                errMsg={errMsg}
+                child={child}
+                isValid={isValid}
+              />
+            )
+          )}
+          <SubmitBtn
+            title="Sign Up"
+            isLoading={isLoading}
+            onPress={isOkaySignUp ? onSignUp : undefined}
+          />
+        </View>
+      </ScrollView>
     </Container>
   );
 };

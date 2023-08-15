@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import auth from "@react-native-firebase/auth";
 import { MainStackParamList } from "../@types";
 import { INote, notesFilterState, textState } from "~/store";
 import { memosCollection } from "~/lib";
+import { showAlert } from "~/utils";
 
 type NewNoteProps = NativeStackScreenProps<MainStackParamList, "Note">;
 
@@ -23,9 +24,13 @@ const NewNote = ({ navigation }: NewNoteProps) => {
       folder: filter,
     };
 
-    await memosCollection.add(newNote);
-    setText("");
-    navigation.navigate("Home", { folder: filter });
+    try {
+      await memosCollection.add(newNote);
+      setText("");
+      navigation.navigate("Home", { folder: filter });
+    } catch (error) {
+      showAlert("Error", "An error occurred while adding a new note.");
+    }
   };
 
   useEffect(() => {
@@ -36,7 +41,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
 
   return (
     <Container>
-      <View>
+      <ScrollView>
         <Textarea
           multiline={true}
           autoFocus
@@ -44,7 +49,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
           onChangeText={(text: string) => setText(text)}
           placeholder="Insert here"
         />
-      </View>
+      </ScrollView>
     </Container>
   );
 };

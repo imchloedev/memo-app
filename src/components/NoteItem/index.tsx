@@ -6,7 +6,7 @@ import IconButton from "components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
 import { INote, notesState } from "~/store";
 import { memosCollection } from "~/lib";
-import { getNoteDate } from "utils/date";
+import { getNoteDate } from "~/utils/dateToString";
 
 interface INoteItemProps {
   note: INote;
@@ -21,10 +21,14 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
   const deleteNote = async (noteId: undefined | string) => {
     try {
       await memosCollection.doc(noteId).delete();
-      setNotes(notes.filter((note) => note.id !== noteId));
+      removeNoteFromList(noteId);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const removeNoteFromList = (noteId: string | undefined) => {
+    setNotes(notes.filter((note) => note.id !== noteId));
   };
 
   return (
@@ -43,6 +47,11 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
           color={mode.color.iconColor}
           onPress={() => deleteNote(id)}
         />
+        <IconButton
+          iconName="pushpino"
+          color={mode.color.iconColor}
+          onPress={() => console.log("DD")}
+        />
       </ButtonWrapper>
     </Wrapper>
   );
@@ -51,14 +60,15 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
 export default NoteItem;
 
 const Wrapper = styled.TouchableOpacity`
-  flex: 1;
+  flex: 2;
+  flex-direction: row;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.container};
   height: 100px;
   margin: 10px 20px;
   padding: 14px;
   border-radius: 20px;
-  overflow: hidden;
+  /* overflow: hidden; */
 `;
 
 const NoteTitleWrapper = styled.View`
@@ -78,11 +88,12 @@ const NoteDate = styled.Text`
 `;
 
 const NoteFolder = styled.Text`
-  color: #414141;
+  color: #787878;
 `;
 
 const ButtonWrapper = styled.View`
   flex: 1;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
 `;

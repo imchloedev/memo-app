@@ -6,15 +6,15 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components/native";
 import { RecoilRoot } from "recoil";
-import { useColorScheme } from "react-native";
-import { dark, light } from "./styles/theme";
-import Navigator from "./Navigator";
+import { ActivityIndicator, useColorScheme } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import { PaperProvider, useTheme } from "react-native-paper";
-import { subscribeAuth } from "./lib/auth";
-import Splash from "./screens/Splash";
+import Splash from "screens/Splash";
+import Navigator from "./Navigator";
+import { dark, light } from "styles/theme";
+import { subscribeAuth } from "~/apis";
 
 function App(): JSX.Element {
   const theme = useColorScheme();
@@ -48,7 +48,7 @@ function App(): JSX.Element {
     <RecoilRoot>
       <PaperProvider>
         <ThemeProvider theme={theme === "dark" ? dark : light}>
-          {initializing ? <Splash /> : <Navigator />}
+          {initializing ? <ActivityIndicator /> : <Navigator />}
         </ThemeProvider>
       </PaperProvider>
     </RecoilRoot>

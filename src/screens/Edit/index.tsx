@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRecoilValue } from "recoil";
 import { MainStackParamList } from "screens/@types";
-import { notesState, notesFilterState } from "~/store";
+import { notesState, notesFilterState, INote } from "~/store";
 import { memosCollection } from "~/lib";
 import { Container, SaveButton, Textarea } from "../NewNote";
+import { showAlert } from "~/utils";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
@@ -14,27 +15,33 @@ const Edit = ({ route, navigation }: ViewProps) => {
 
   const notes = useRecoilValue(notesState);
   const filter = useRecoilValue(notesFilterState);
-
-  const note = notes.filter((note) => note.id == noteId);
+  const note: INote | undefined = notes.find((note) => note.id === noteId);
 
   const updateNote = async () => {
-    if (note[0].text == editedText || editedText === "") {
+    if (!note) {
       return;
     }
+
+    if (note.text == editedText || editedText === "") return;
 
     const updated = {
       createdAt: Date.now(),
       text: editedText,
     };
 
-    await memosCollection.doc(note[0].id).update(updated);
-
-    navigation.navigate("Home", { folder: filter });
+    try {
+      await memosCollection.doc(note.id).update(updated);
+      navigation.navigate("Home", { folder: filter });
+    } catch (error) {
+      showAlert("Error", "An error occurred while updating the note.");
+    }
   };
 
   useEffect(() => {
-    setEditedText(note[0].text);
-  }, []);
+    if (note) {
+      setEditedText(note.text);
+    }
+  }, [note]);
 
   useEffect(() => {
     navigation.setOptions({

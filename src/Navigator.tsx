@@ -7,13 +7,14 @@ import { LoginStackParamList, MainStackParamList } from "screens/@types";
 import auth from "@react-native-firebase/auth";
 import Home from "screens/Home";
 import Edit from "screens/Edit";
-import NewNote from "screens/NewNote";
+import NewNote, { SaveButton } from "screens/NewNote";
 import MyPage from "screens/MyPage";
 import SignIn from "screens/SignIn";
 import SignUp from "screens/SignUp";
 import Folders from "screens/Folders";
 import IconButton from "components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
+import Modal from "./screens/Modal";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 const LoginStack = createNativeStackNavigator<LoginStackParamList>();
@@ -50,60 +51,81 @@ const HomeStackNavi = () => {
   const mode = useThemeColors();
 
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        initialParams={{ folder: "Notes" }}
-        options={({ navigation }) => ({
-          headerStyle: {
-            backgroundColor: mode.color.bg,
-          },
-          headerRight: () => (
-            <IconButton
-              iconName="pluscircleo"
-              color={mode.color.textColor}
-              onPress={() => navigation.push("Note")}
-            />
-          ),
-          headerLeft: () => (
-            <IconButton
-              iconName="folder1"
-              color={mode.color.textColor}
-              onPress={() => navigation.popToTop()}
-            />
-          ),
-          headerShadowVisible: false,
-        })}
-      />
-      <Stack.Screen
-        name="Note"
-        component={NewNote}
-        options={{
-          headerStyle: {
-            backgroundColor: mode.color.bg,
-          },
-          title: "New Note",
-          headerTintColor: mode.color.textColor,
-        }}
-      />
-      <Stack.Screen
-        name="Edit"
-        component={Edit}
-        initialParams={{ noteId: "note" }}
-        options={{
-          title: "",
-          headerStyle: {
-            backgroundColor: mode.color.bg,
-          },
-          headerTintColor: mode.color.textColor,
-        }}
-      />
-      <Stack.Screen
-        name="Folders"
-        component={Folders}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator initialRouteName="Folders">
+      <Stack.Group>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={({ navigation }) => ({
+            headerStyle: {
+              backgroundColor: mode.color.bg,
+            },
+            headerRight: () => (
+              <IconButton
+                iconName="pluscircleo"
+                color={mode.color.textColor}
+                onPress={() => navigation.push("Note")}
+              />
+            ),
+            headerLeft: () => (
+              <IconButton
+                iconName="folder1"
+                color={mode.color.textColor}
+                onPress={() => navigation.navigate("Folders")}
+              />
+            ),
+            headerShadowVisible: false,
+          })}
+        />
+        <Stack.Screen
+          name="Note"
+          component={NewNote}
+          options={{
+            headerStyle: {
+              backgroundColor: mode.color.bg,
+            },
+            title: "New Note",
+            headerTintColor: mode.color.textColor,
+          }}
+        />
+        <Stack.Screen
+          name="Edit"
+          component={Edit}
+          initialParams={{ noteId: "note" }}
+          options={{
+            title: "",
+            headerStyle: {
+              backgroundColor: mode.color.bg,
+            },
+            headerTintColor: mode.color.textColor,
+          }}
+        />
+        <Stack.Screen
+          name="Folders"
+          component={Folders}
+          options={{ headerShown: false }}
+        />
+      </Stack.Group>
+      <Stack.Group>
+        <Stack.Screen
+          name="Modal"
+          component={Modal}
+          options={({ navigation }) => ({
+            headerTitle: "New Folder",
+            presentation: "modal",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: mode.color.bg,
+            },
+            headerTintColor: mode.color.textColor,
+            headerLeft: () => (
+              <SaveButton onPress={() => navigation.goBack()}>
+                Cancel
+              </SaveButton>
+            ),
+          })}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };
@@ -127,7 +149,7 @@ const TabNavi = () => {
     <Tab.Navigator
       initialRouteName="Main"
       activeColor={mode.color.textColor}
-      inactiveColor={mode.color.middleGray}
+      inactiveColor={mode.color.commonMiddleGray}
       barStyle={{ backgroundColor: mode.color.bg }}
     >
       <Tab.Screen

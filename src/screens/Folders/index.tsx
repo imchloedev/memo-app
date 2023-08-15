@@ -1,40 +1,123 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useEffect } from "react";
+import { ScrollView, View, Alert, ActivityIndicator } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useIsFocused } from "@react-navigation/native";
 import { styled } from "styled-components/native";
-import Icon from "react-native-vector-icons/AntDesign";
-import { useRecoilValue } from "recoil";
-import { foldersState, noteStatesState } from "~/store";
+import auth from "@react-native-firebase/auth";
+import { useRecoilState } from "recoil";
+import IconButton from "components/IconButton";
+import FolderItem from "components/FolderItem";
+import Spinner from "components/Spinner";
+import { foldersState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
 import { MainStackParamList } from "../@types";
+import { deleteNotesAndFolder, getFolders } from "~/apis";
+import { foldersCollection } from "~/lib";
+import { GuideText } from "../Home";
+import { showAlert } from "~/utils";
 
 type FoldersProps = NativeStackScreenProps<MainStackParamList, "Folders">;
 
 const Folders = ({ navigation }: FoldersProps) => {
-  const folders = useRecoilValue(foldersState);
+  const [folders, setFolders] = useRecoilState(foldersState);
   const mode = useThemeColors();
+  const isFocused = useIsFocused();
+  const currentUser = auth().currentUser;
 
-  const stats = useRecoilValue(noteStatesState);
+  const deleteFolder = async (id: string | undefined, folderName: string) => {
+    const shouldDelete = await showDeleteConfirmation();
 
-  console.log(stats);
+    if (!shouldDelete) return;
+
+    try {
+      await foldersCollection.doc(id).delete();
+      await deleteNotesAndFolder(folderName);
+      removeFolderFromList(id);
+    } catch (error) {
+      showAlert("Error", "An error occurred while deleting the folder.");
+    }
+  };
+
+  const showDeleteConfirmation = async () => {
+    return new Promise((resolve) => {
+      Alert.alert(
+        "Are you sure to delete this folder?",
+        "If confirmed, all notes within this folder will also be removed.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => resolve(false),
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => resolve(true),
+          },
+        ]
+      );
+    });
+  };
+
+  const removeFolderFromList = (folderId: string | undefined) => {
+    setFolders(folders.filter((folder) => folder.id !== folderId));
+  };
+
+  const moveToFolder = (folderName: string) => {
+    navigation.navigate("Home", { folder: folderName });
+  };
+
+  const fetchFolders = async () => {
+    try {
+      const result = await getFolders(currentUser);
+      setFolders(result);
+    } catch (error) {
+      showAlert("Error", "Please try again later");
+    }
+  };
+
+  useEffect(() => {
+    fetchFolders();
+  }, [isFocused]);
 
   return (
     <Container>
-      <Title>Folders</Title>
-      <Wrapper>
-        {folders.map(({ id, name }) => (
-          <View key={id}>
-            <FolderBox
-              key={id}
-              onPress={() => navigation.navigate("Home", { folder: name })}
-            >
-              <Icon name="right" size={16} color={mode.color.iconColor} />
-              <FolderName>{name}</FolderName>
-            </FolderBox>
-            {folders.length > id && <Separator />}
-          </View>
-        ))}
-      </Wrapper>
+      <ScrollView>
+        <Wrapper>
+          <TitleWrapper>
+            <Title>Folders</Title>
+            <IconButton
+              iconName="addfolder"
+              onPress={() => navigation.navigate("Modal")}
+              color={mode.color.textColor}
+            />
+          </TitleWrapper>
+
+          <ContentWrapper>
+            {folders ? (
+              folders.length > 0 ? (
+                folders.map((folder, idx) => {
+                  const { id, name } = folder;
+                  return (
+                    <View key={id}>
+                      <FolderItem
+                        id={id}
+                        name={name}
+                        moveToFolder={moveToFolder}
+                        deleteFolder={deleteFolder}
+                      />
+                      {folders.length > idx + 1 && <Separator />}
+                    </View>
+                  );
+                })
+              ) : (
+                <GuideText>No folders here yet!</GuideText>
+              )
+            ) : (
+              <ActivityIndicator />
+            )}
+          </ContentWrapper>
+        </Wrapper>
+      </ScrollView>
     </Container>
   );
 };
@@ -46,31 +129,28 @@ const Container = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.color.bg};
 `;
 
+const Wrapper = styled.View`
+  margin: 0 20px;
+`;
+
+const TitleWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0;
+`;
+
 const Title = styled.Text`
   font-size: 24px;
-  margin: 40px 0;
-  padding: 0 20px;
   font-weight: bold;
   color: ${({ theme }) => theme.color.textColor};
 `;
 
-const Wrapper = styled.View`
-  margin: 0 20px;
-  padding: 20px;
+const ContentWrapper = styled.View`
+  padding: 10px 20px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.container};
-`;
-
-const FolderBox = styled.TouchableOpacity`
-  margin: 10px 0;
-  display: flex;
-  gap: 10px;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const FolderName = styled.Text`
-  color: ${({ theme }) => theme.color.textColor};
 `;
 
 const Separator = styled.View`

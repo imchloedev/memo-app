@@ -8,6 +8,13 @@ export interface INote {
   folder: string;
 }
 
+export interface IFolder {
+  id?: string;
+  createdAt: number;
+  creatorId: string | undefined;
+  name: string;
+}
+
 export interface IUser {
   username: string;
   password: string;
@@ -30,16 +37,12 @@ export const notesState = atom<INote[]>({
 
 export const notesFilterState = atom<string>({
   key: "notesFilterState",
-  default: "Notes",
+  default: "",
 });
 
-export const foldersState = atom({
+export const foldersState = atom<IFolder[]>({
   key: "foldersState",
-  default: [
-    { id: 1, name: "Notes" },
-    { id: 2, name: "Work" },
-    { id: 3, name: "Wish List" },
-  ],
+  default: [],
 });
 
 export const userState = atom<IUser>({
@@ -48,6 +51,11 @@ export const userState = atom<IUser>({
     username: "",
     password: "",
   },
+});
+
+export const currentUser = atom({
+  key: "currentUser",
+  default: {},
 });
 
 export const personalInfoState = atom<IPersonalInfo>({

@@ -1,16 +1,16 @@
-import React, { useRef, useEffect, useCallback } from "react";
-import { Animated } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { ActivityIndicator, Animated, Text, View } from "react-native";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import auth from "@react-native-firebase/auth";
 import HomeHeaderTitle from "components/HomeHeaderTitle";
 import NoteItem from "components/NoteItem";
-import Spinner from "components/Spinner";
 import { notesFilterState, notesState, filteredNotesList } from "~/store";
 import { MainStackParamList } from "../@types/index";
-import { getNotes } from "apis/memo";
+import { getNotes } from "~/apis";
+import { showAlert } from "~/utils";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
@@ -18,10 +18,12 @@ const Home = ({ navigation, route }: HomeProps) => {
   const { folder } = route.params;
   const scrollY = useRef(new Animated.Value(0)).current;
   const currentUser = auth().currentUser;
+  console.log("currentUser", currentUser);
 
   const setNotes = useSetRecoilState(notesState);
   const [filter, setFilter] = useRecoilState(notesFilterState);
   const filteredNotes = useRecoilValue(filteredNotesList);
+  const isFocused = useIsFocused();
 
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -33,7 +35,7 @@ const Home = ({ navigation, route }: HomeProps) => {
       const result = await getNotes(currentUser);
       setNotes(result);
     } catch (error) {
-      console.error("Error fetching memos:", error);
+      showAlert("Error", "Please try again later.");
     }
   };
 
@@ -56,12 +58,10 @@ const Home = ({ navigation, route }: HomeProps) => {
     animatedHeaderTitle();
   }, [scrollY, navigation]);
 
-  useFocusEffect(
-    useCallback(() => {
-      setFilter(folder);
-      fetchNotes();
-    }, [])
-  );
+  useEffect(() => {
+    setFilter(folder);
+    fetchNotes();
+  }, [isFocused]);
 
   return (
     <Container>
@@ -76,7 +76,7 @@ const Home = ({ navigation, route }: HomeProps) => {
             <GuideText>No Notes here yet.</GuideText>
           )
         ) : (
-          <Spinner />
+          <ActivityIndicator />
         )}
       </Animated.ScrollView>
     </Container>
@@ -98,7 +98,7 @@ const Title = styled.Text`
   color: ${({ theme }) => theme.color.textColor};
 `;
 
-const GuideText = styled.Text`
+export const GuideText = styled.Text`
   margin: 20px 0;
   text-align: center;
   color: ${({ theme }) => theme.color.textColor};

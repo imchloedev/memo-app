@@ -9,8 +9,8 @@ import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import { userState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
-import { signIn } from "~/lib";
-import { validateEmail, validatePassword } from "~/utils";
+import { isFirebaseAuthError, handleFirebaseAuthError, signIn } from "~/apis";
+import { showAlert, validateEmail, validatePassword } from "~/utils";
 
 type SignInProps = NativeStackScreenProps<LoginStackParamList, "SignIn">;
 
@@ -18,6 +18,8 @@ const SignIn = ({ navigation }: SignInProps) => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const { username, password } = userInfo;
   const [isShow, setIsShow] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
   const mode = useThemeColors();
 
   const isOkayLogin = !(validateEmail(username) && validatePassword(password));
@@ -26,12 +28,20 @@ const SignIn = ({ navigation }: SignInProps) => {
     setUserInfo({ ...userInfo, [name]: text });
   };
 
+  console.log(isLoading);
+
   const onLogin = async () => {
+    setIsLoading(true);
     try {
       await signIn(username, password);
       setUserInfo({ ...userInfo, username: "", password: "" });
-    } catch (err) {
-      console.log(err);
+    } catch (error: unknown) {
+      if (isFirebaseAuthError(error)) {
+        const errorMsg = handleFirebaseAuthError(error);
+        showAlert("Failed", errorMsg);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -124,6 +134,7 @@ const SignIn = ({ navigation }: SignInProps) => {
         )}
         <SubmitBtn
           title="Sign In"
+          isLoading={isLoading}
           onPress={isOkayLogin ? onLogin : undefined}
         />
         <LinkWrapper onPress={() => navigation.navigate("SignUp")}>

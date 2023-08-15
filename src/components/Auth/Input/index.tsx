@@ -57,9 +57,11 @@ const InputWrapper = styled.View`
   padding: 10px 20px;
 `;
 
-const InputBox = styled.TextInput`
+const InputBox = styled.TextInput.attrs({
+  placeholderTextColor: "#909090",
+})`
   flex-basis: 90%;
-  height: 34px;
+  height: 40px;
   color: ${({ theme }) => theme.color.textColor};
 `;
 
