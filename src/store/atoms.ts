@@ -6,6 +6,7 @@ export interface INote {
   creatorId: string | undefined;
   text: string;
   folder: string;
+  isPinned?: boolean;
 }
 
 export interface IFolder {
@@ -30,19 +31,9 @@ export const textState = atom<string>({
   default: "",
 });
 
-export const notesState = atom<INote[]>({
-  key: "notesState",
-  default: [],
-});
-
 export const notesFilterState = atom<string>({
   key: "notesFilterState",
   default: "",
-});
-
-export const foldersState = atom<IFolder[]>({
-  key: "foldersState",
-  default: [],
 });
 
 export const userState = atom<IUser>({
@@ -51,11 +42,6 @@ export const userState = atom<IUser>({
     username: "",
     password: "",
   },
-});
-
-export const currentUser = atom({
-  key: "currentUser",
-  default: {},
 });
 
 export const personalInfoState = atom<IPersonalInfo>({

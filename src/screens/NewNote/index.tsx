@@ -1,41 +1,45 @@
 import React, { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import auth from "@react-native-firebase/auth";
-import { MainStackParamList } from "../@types";
 import { INote, notesFilterState, textState } from "~/store";
-import { memosCollection } from "~/lib";
 import { showAlert } from "~/utils";
+import { useAddNoteMutation } from "~/hooks/notes";
+import { MainStackParamList } from "../@types";
 
 type NewNoteProps = NativeStackScreenProps<MainStackParamList, "Note">;
 
 const NewNote = ({ navigation }: NewNoteProps) => {
   const [text, setText] = useRecoilState(textState);
   const filter = useRecoilValue(notesFilterState);
+
+  const onSuccessNN = () => {
+    setText("");
+    navigation.navigate("Home", { folder: filter });
+  };
+
+  const onErrorNN = () => {
+    showAlert("Error", "An error occurred while adding a new note.");
+  };
+
   const currentUser = auth().currentUser;
+  const { mutation: onAddNote } = useAddNoteMutation(onSuccessNN, onErrorNN);
 
-  const addNote = async () => {
-    const newNote: INote = {
-      createdAt: Date.now(),
-      creatorId: currentUser?.uid,
-      text,
-      folder: filter,
-    };
-
-    try {
-      await memosCollection.add(newNote);
-      setText("");
-      navigation.navigate("Home", { folder: filter });
-    } catch (error) {
-      showAlert("Error", "An error occurred while adding a new note.");
-    }
+  const newNote: INote = {
+    createdAt: Date.now(),
+    creatorId: currentUser?.uid,
+    text,
+    folder: filter,
+    isPinned: false,
   };
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <SaveButton onPress={addNote}>Done</SaveButton>,
+      headerRight: () => (
+        <SaveButton onPress={() => onAddNote.mutate(newNote)}>Done</SaveButton>
+      ),
     });
   }, [navigation, text]);
 

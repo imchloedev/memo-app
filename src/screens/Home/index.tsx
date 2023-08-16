@@ -1,47 +1,40 @@
 import React, { useRef, useEffect } from "react";
-import { ActivityIndicator, Animated, Text, View } from "react-native";
+import { ActivityIndicator, Animated, FlatList } from "react-native";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useIsFocused } from "@react-navigation/native";
-import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import auth from "@react-native-firebase/auth";
 import HomeHeaderTitle from "components/HomeHeaderTitle";
-import NoteItem from "components/NoteItem";
-import { notesFilterState, notesState, filteredNotesList } from "~/store";
-import { MainStackParamList } from "../@types/index";
-import { getNotes } from "~/apis";
+import NoteItem from "~/components/NoteItem";
+import { notesFilterState } from "~/store";
 import { showAlert } from "~/utils";
+import { useNotesListQuery } from "~/hooks/notes";
+
+import { MainStackParamList } from "../@types/index";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
 const Home = ({ navigation, route }: HomeProps) => {
   const { folder } = route.params;
-  const scrollY = useRef(new Animated.Value(0)).current;
   const currentUser = auth().currentUser;
-  console.log("currentUser", currentUser);
-
-  const setNotes = useSetRecoilState(notesState);
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [filter, setFilter] = useRecoilState(notesFilterState);
-  const filteredNotes = useRecoilValue(filteredNotesList);
   const isFocused = useIsFocused();
+  const { isLoading, error, notesState } = useNotesListQuery(currentUser);
 
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     { useNativeDriver: false }
   );
 
-  const fetchNotes = async () => {
-    try {
-      const result = await getNotes(currentUser);
-      setNotes(result);
-    } catch (error) {
-      showAlert("Error", "Please try again later.");
-    }
-  };
-
   const moveToNote = (id: string | undefined) => {
     navigation.navigate("Edit", { noteId: id });
   };
+
+  useEffect(() => {
+    setFilter(folder);
+  }, [isFocused]);
 
   useEffect(() => {
     const animatedHeaderTitle = () => {
@@ -56,29 +49,24 @@ const Home = ({ navigation, route }: HomeProps) => {
     };
 
     animatedHeaderTitle();
-  }, [scrollY, navigation]);
+  }, [scrollY]);
 
-  useEffect(() => {
-    setFilter(folder);
-    fetchNotes();
-  }, [isFocused]);
+  if (isLoading) return <ActivityIndicator />;
+  if (error) return showAlert("Error", "Please try again later.");
 
   return (
     <Container>
-      <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-        <Title>{filter}</Title>
-        {filteredNotes ? (
-          filteredNotes.length > 0 ? (
-            filteredNotes.map((note) => (
-              <NoteItem key={note.id} note={note} moveToNote={moveToNote} />
-            ))
-          ) : (
-            <GuideText>No Notes here yet.</GuideText>
-          )
-        ) : (
-          <ActivityIndicator />
-        )}
-      </Animated.ScrollView>
+      {notesState && (
+        <FlatList
+          data={notesState}
+          renderItem={({ item }) => (
+            <NoteItem note={item} moveToNote={moveToNote} />
+          )}
+          keyExtractor={(item) => item.id?.toString() || ""}
+          onScroll={handleScroll}
+          ListHeaderComponent={() => <Title>{filter}</Title>}
+        />
+      )}
     </Container>
   );
 };
@@ -95,11 +83,5 @@ const Title = styled.Text`
   margin: 20px 0;
   padding: 0 20px;
   font-weight: bold;
-  color: ${({ theme }) => theme.color.textColor};
-`;
-
-export const GuideText = styled.Text`
-  margin: 20px 0;
-  text-align: center;
   color: ${({ theme }) => theme.color.textColor};
 `;

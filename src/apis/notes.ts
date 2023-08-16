@@ -1,6 +1,19 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { IFolder, INote } from "~/store";
-import { foldersCollection, memosCollection } from "~/lib";
+import { INote } from "~/store";
+import { memosCollection } from "~/lib";
+
+interface IPinNote {
+  id: string | undefined;
+  isPinned: boolean | undefined;
+}
+
+interface IUpdateNote {
+  noteId: string | undefined;
+  updated: {
+    createdAt: number;
+    text: string;
+  };
+}
 
 export const getNotes = async (
   user: FirebaseAuthTypes.User | undefined | null
@@ -18,36 +31,34 @@ export const getNotes = async (
       creatorId: docData.creatorId,
       text: docData.text,
       folder: docData.folder,
+      isPinned: docData.isPinned,
     };
   });
 
   return data;
 };
 
-export const getFolders = async (
-  user: FirebaseAuthTypes.User | undefined | null
-): Promise<IFolder[]> => {
-  const querySnapshot = await foldersCollection
-    .where("creatorId", "==", user?.uid)
-    .orderBy("createdAt", "asc")
-    .get();
-
-  const data: IFolder[] = querySnapshot.docs.map((documentSnapshot) => {
-    const docData = documentSnapshot.data();
-    return {
-      id: documentSnapshot.id,
-      createdAt: docData.createdAt,
-      creatorId: docData.creatorId,
-      name: docData.name,
-    };
-  });
+export const getNoteById = async (noteId: string | undefined) => {
+  const documentSnapshot = await memosCollection.doc(noteId).get();
+  const data = documentSnapshot.data();
 
   return data;
 };
 
-export const deleteNotesAndFolder = async (name: string) => {
-  const querySnapshot = await memosCollection.where("folder", "==", name).get();
-  querySnapshot.forEach((documentSnapshot) => {
-    documentSnapshot.ref.delete();
+export const deleteNote = async (noteId: undefined | string) => {
+  await memosCollection.doc(noteId).delete();
+};
+
+export const pinNote = async ({ id, isPinned }: IPinNote) => {
+  await memosCollection.doc(id).update({
+    isPinned: !isPinned,
   });
+};
+
+export const addNote = async (newNote: INote) => {
+  await memosCollection.add(newNote);
+};
+
+export const updateNote = async ({ noteId, updated }: IUpdateNote) => {
+  await memosCollection.doc(noteId).update(updated);
 };

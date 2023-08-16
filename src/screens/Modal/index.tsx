@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
-import { foldersCollection } from "~/lib";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { MainStackParamList } from "../@types/index";
-import { SaveButton } from "../NewNote";
 import { styled } from "styled-components/native";
 import { showAlert } from "~/utils";
+import { useAddFolderMutation } from "~/hooks";
+import { SaveButton } from "../NewNote";
+import { MainStackParamList } from "../@types/index";
 
 type ModalProps = NativeStackScreenProps<MainStackParamList, "Modal">;
 
@@ -13,22 +13,30 @@ const Modal = ({ navigation }: ModalProps) => {
   const [text, setText] = useState("");
   const currentUser = auth().currentUser;
 
+  const onSuccessNF = () => {
+    setText("");
+    navigation.navigate("Folders");
+  };
+
+  const onErrorNF = () => {
+    showAlert("Error", "An error occurred while making a new folder.");
+  };
+
+  const { mutation: onAddFolder } = useAddFolderMutation(
+    onSuccessNF,
+    onErrorNF
+  );
+
+  const newFolder = {
+    createdAt: Date.now(),
+    creatorId: currentUser?.uid,
+    name: text,
+  };
+
   const addFolder = async () => {
-    if (!text && text.length < 2) return;
+    if (!text) return;
 
-    const newFolder = {
-      createdAt: Date.now(),
-      creatorId: currentUser?.uid,
-      name: text,
-    };
-
-    try {
-      await foldersCollection.add(newFolder);
-      setText("");
-      navigation.navigate("Folders");
-    } catch (err) {
-      showAlert("Error", "An error occurred while making a new folder.");
-    }
+    onAddFolder.mutate(newFolder);
   };
 
   useEffect(() => {

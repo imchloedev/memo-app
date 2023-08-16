@@ -11,10 +11,12 @@ import { RecoilRoot } from "recoil";
 import { ActivityIndicator, useColorScheme } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import { PaperProvider, useTheme } from "react-native-paper";
-import Splash from "screens/Splash";
 import Navigator from "./Navigator";
 import { dark, light } from "styles/theme";
 import { subscribeAuth } from "~/apis";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App(): JSX.Element {
   const theme = useColorScheme();
@@ -45,13 +47,15 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <RecoilRoot>
-      <PaperProvider>
-        <ThemeProvider theme={theme === "dark" ? dark : light}>
-          {initializing ? <ActivityIndicator /> : <Navigator />}
-        </ThemeProvider>
-      </PaperProvider>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <PaperProvider>
+          <ThemeProvider theme={theme === "dark" ? dark : light}>
+            {initializing ? <ActivityIndicator /> : <Navigator />}
+          </ThemeProvider>
+        </PaperProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 }
 
