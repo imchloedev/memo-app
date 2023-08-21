@@ -1,10 +1,7 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { addNewFolder, deleteFolder, getFolders } from "~/apis";
+import { TUser, addNewFolder, deleteFolder, getFolders } from "~/apis";
 
-export const useFoldersListQuery = (
-  user: FirebaseAuthTypes.User | undefined | null
-) => {
+export const useFoldersListQuery = (user: TUser) => {
   const {
     isLoading,
     data: foldersState,
@@ -30,8 +27,8 @@ export const useAddFolderMutation = (
   const queryClient = useQueryClient();
   const mutation = useMutation(addNewFolder, {
     onSuccess: () => {
-      onSuccessCb();
       queryClient.invalidateQueries(["folders"]);
+      onSuccessCb();
     },
     onError: () => onErrorCb(),
   });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
 import { LoginStackParamList } from "../@types";
@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import IconButton from "components/IconButton";
 import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
+import Layout from "components/Layout";
 import { userState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
 import { isFirebaseAuthError, handleFirebaseAuthError, signIn } from "~/apis";
@@ -93,57 +94,59 @@ const SignIn = ({ navigation }: SignInProps) => {
   ];
 
   return (
-    <Container>
-      <TitleWrapper>
-        <Title>Sign in</Title>
-        <SubTitle>Welcome Back!</SubTitle>
-      </TitleWrapper>
-      <View>
-        {LOGIN_INPUT_PROPS.map(
-          ({
-            id,
-            value,
-            name,
-            label,
-            textContentType,
-            autoCapitalize,
-            secureTextEntry,
-            placeholder,
-            placeholderTextColor,
-            handleChange,
-            errMsg,
-            child,
-            isValid,
-          }) => (
-            <Input
-              key={id}
-              name={name}
-              value={value}
-              placeholder={placeholder}
-              placeholderTextColor={placeholderTextColor}
-              label={label}
-              textContentType={textContentType}
-              autoCapitalize={autoCapitalize}
-              secureTextEntry={secureTextEntry}
-              handleChange={handleChange}
-              errMsg={errMsg}
-              child={child}
-              isValid={isValid}
-            />
-          )
-        )}
-        <SubmitBtn
-          title="Sign In"
-          isLoading={isLoading}
-          onPress={isOkayLogin ? onLogin : undefined}
-        />
-        <LinkWrapper onPress={() => navigation.navigate("SignUp")}>
-          <LinkText>
-            Don't have an account? <Link>Sign Up</Link>
-          </LinkText>
-        </LinkWrapper>
-      </View>
-    </Container>
+    <Layout>
+      <Container>
+        <TitleWrapper>
+          <Title>Sign in</Title>
+          <SubTitle>Welcome Back!</SubTitle>
+        </TitleWrapper>
+        <View>
+          {LOGIN_INPUT_PROPS.map(
+            ({
+              id,
+              value,
+              name,
+              label,
+              textContentType,
+              autoCapitalize,
+              secureTextEntry,
+              placeholder,
+              placeholderTextColor,
+              handleChange,
+              errMsg,
+              child,
+              isValid,
+            }) => (
+              <Input
+                key={id}
+                name={name}
+                value={value}
+                placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
+                label={label}
+                textContentType={textContentType}
+                autoCapitalize={autoCapitalize}
+                secureTextEntry={secureTextEntry}
+                handleChange={handleChange}
+                errMsg={errMsg}
+                child={child}
+                isValid={isValid}
+              />
+            )
+          )}
+          <SubmitBtn
+            title="Sign In"
+            isLoading={isLoading}
+            onPress={isOkayLogin ? onLogin : undefined}
+          />
+          <LinkWrapper onPress={() => navigation.navigate("SignUp")}>
+            <LinkText>
+              Don't have an account? <Link>Sign Up</Link>
+            </LinkText>
+          </LinkWrapper>
+        </View>
+      </Container>
+    </Layout>
   );
 };
 
@@ -152,7 +155,6 @@ export default SignIn;
 const Container = styled.View`
   flex: 1;
   justify-content: center;
-  background-color: ${({ theme }) => theme.color.bg};
   padding: 0 20px;
 `;
 

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
+import Layout from "components/Layout";
 import { showAlert } from "~/utils";
-import { useAddFolderMutation } from "~/hooks";
+import { useAddFolderMutation, useFoldersListQuery } from "~/hooks";
 import { SaveButton } from "../NewNote";
 import { MainStackParamList } from "../@types/index";
 
@@ -12,6 +13,8 @@ type ModalProps = NativeStackScreenProps<MainStackParamList, "Modal">;
 const Modal = ({ navigation }: ModalProps) => {
   const [text, setText] = useState("");
   const currentUser = auth().currentUser;
+  const { foldersState } = useFoldersListQuery(currentUser);
+  console.log(foldersState);
 
   const onSuccessNF = () => {
     setText("");
@@ -33,8 +36,13 @@ const Modal = ({ navigation }: ModalProps) => {
     name: text,
   };
 
-  const addFolder = async () => {
-    if (!text) return;
+  const addFolder = () => {
+    if (!text) {
+      return;
+    } else if (foldersState?.find((folder) => folder.name === text)) {
+      showAlert("Name Taken", "Please choose a different name");
+      return;
+    }
 
     onAddFolder.mutate(newFolder);
   };
@@ -46,12 +54,14 @@ const Modal = ({ navigation }: ModalProps) => {
   }, [text]);
 
   return (
-    <Container>
-      <Label>New Folder Name</Label>
-      <InputWrapper>
-        <FolderNameInput value={text} onChangeText={setText} />
-      </InputWrapper>
-    </Container>
+    <Layout>
+      <Container>
+        <Label>New Folder Name</Label>
+        <InputWrapper>
+          <FolderNameInput value={text} onChangeText={setText} autoFocus />
+        </InputWrapper>
+      </Container>
+    </Layout>
   );
 };
 

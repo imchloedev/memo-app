@@ -6,6 +6,7 @@ export type MainStackParamList = {
   Folders: undefined;
   MyPage: undefined;
   Modal: undefined;
+  Search: undefined;
 };
 
 export type LoginStackParamList = {

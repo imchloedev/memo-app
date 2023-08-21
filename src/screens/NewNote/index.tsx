@@ -4,8 +4,9 @@ import { ScrollView } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import auth from "@react-native-firebase/auth";
+import Layout from "components/Layout";
 import { INote, notesFilterState, textState } from "~/store";
-import { showAlert } from "~/utils";
+import { generateKeyword, showAlert } from "~/utils";
 import { useAddNoteMutation } from "~/hooks/notes";
 import { MainStackParamList } from "../@types";
 
@@ -33,6 +34,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
     text,
     folder: filter,
     isPinned: false,
+    keywords: generateKeyword(text),
   };
 
   useEffect(() => {
@@ -44,26 +46,26 @@ const NewNote = ({ navigation }: NewNoteProps) => {
   }, [navigation, text]);
 
   return (
-    <Container>
-      <ScrollView>
-        <Textarea
-          multiline={true}
-          autoFocus
-          value={text}
-          onChangeText={(text: string) => setText(text)}
-          placeholder="Insert here"
-        />
-      </ScrollView>
-    </Container>
+    <Layout>
+      <Container>
+        <ScrollView>
+          <Textarea
+            multiline={true}
+            autoFocus
+            value={text}
+            onChangeText={(text: string) => setText(text)}
+            placeholder="Insert here"
+          />
+        </ScrollView>
+      </Container>
+    </Layout>
   );
 };
 
 export default NewNote;
 
-export const Container = styled.View`
-  flex: 1;
+export const Container = styled.ScrollView`
   padding: 20px;
-  background-color: ${({ theme }) => theme.color.bg};
 `;
 
 export const Textarea = styled.TextInput.attrs({

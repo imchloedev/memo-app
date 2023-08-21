@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useRecoilValue } from "recoil";
+import { styled } from "styled-components/native";
 import { MainStackParamList } from "screens/@types";
-import { notesFilterState } from "~/store";
-import { showAlert } from "~/utils";
+import Layout from "components/Layout";
+import { generateKeyword, showAlert } from "~/utils";
 import { useNoteQuery, useUpdateNoteMutation } from "~/hooks/notes";
-import { Container, SaveButton, Textarea } from "../NewNote";
+import { SaveButton, Textarea } from "../NewNote";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
@@ -13,10 +13,11 @@ const Edit = ({ route, navigation }: ViewProps) => {
   const { noteId } = route.params;
   const [editedText, setEditedText] = useState("");
   const { note } = useNoteQuery(noteId);
-  const filter = useRecoilValue(notesFilterState);
+
+  console.log(navigation.canGoBack());
 
   const onSuccessUN = () => {
-    navigation.navigate("Home", { folder: filter });
+    // navigation.navigate("Home", { folder: filter });
   };
 
   const onErrorUN = () => {
@@ -31,14 +32,15 @@ const Edit = ({ route, navigation }: ViewProps) => {
   const updated = {
     createdAt: Date.now(),
     text: editedText,
+    keywords: generateKeyword(editedText),
   };
 
   const updateNote = () => {
     if (!note) {
       return;
+    } else if (note.text == editedText || editedText === "") {
+      return;
     }
-
-    if (note.text == editedText || editedText === "") return;
 
     onUpdateNote.mutate({ noteId, updated });
   };
@@ -56,15 +58,21 @@ const Edit = ({ route, navigation }: ViewProps) => {
   }, [editedText]);
 
   return (
-    <Container>
-      <Textarea
-        value={editedText}
-        multiline={true}
-        onChangeText={(text: string) => setEditedText(text)}
-        placeholder="Insert here"
-      />
-    </Container>
+    <Layout>
+      <Wrapper>
+        <Textarea
+          value={editedText}
+          multiline={true}
+          onChangeText={(text: string) => setEditedText(text)}
+          placeholder="Insert here"
+        />
+      </Wrapper>
+    </Layout>
   );
 };
 
 export default Edit;
+
+const Wrapper = styled.ScrollView`
+  padding: 20px;
+`;

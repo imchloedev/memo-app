@@ -3,12 +3,14 @@ import { styled } from "styled-components/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconButton from "components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { TUser } from "~/apis";
 
 interface IFolderItemProps {
   id: string | undefined;
   name: string;
   moveToFolder: (name: string) => void;
-  deleteFolder: (id: string | undefined, name: string) => void;
+  deleteFolder: (id: string | undefined, name: string, user: TUser) => void;
 }
 
 const FolderItem = ({
@@ -18,6 +20,7 @@ const FolderItem = ({
   moveToFolder,
 }: IFolderItemProps) => {
   const mode = useThemeColors();
+  const currentUser = auth().currentUser;
 
   return (
     <FolderBox onPress={() => moveToFolder(name)}>
@@ -28,7 +31,7 @@ const FolderItem = ({
       <IconButton
         iconName="delete"
         color={mode.color.iconColor}
-        onPress={() => deleteFolder(id, name)}
+        onPress={() => deleteFolder(id, name, currentUser)}
       />
     </FolderBox>
   );

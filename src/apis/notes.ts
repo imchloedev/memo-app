@@ -1,6 +1,6 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { INote } from "~/store";
 import { memosCollection } from "~/lib";
+import { TUser } from "./folders";
 
 interface IPinNote {
   id: string | undefined;
@@ -15,9 +15,12 @@ interface IUpdateNote {
   };
 }
 
-export const getNotes = async (
-  user: FirebaseAuthTypes.User | undefined | null
-): Promise<INote[]> => {
+interface ISearchNote {
+  user: TUser;
+  keyword: string;
+}
+
+export const getNotes = async (user: TUser): Promise<INote[]> => {
   const querySnapshot = await memosCollection
     .where("creatorId", "==", user?.uid)
     .orderBy("createdAt", "desc")
@@ -61,4 +64,24 @@ export const addNote = async (newNote: INote) => {
 
 export const updateNote = async ({ noteId, updated }: IUpdateNote) => {
   await memosCollection.doc(noteId).update(updated);
+};
+
+export const searchNotes = async ({ user, keyword }: ISearchNote) => {
+  const querySnapshot = await memosCollection
+    .where("creatorId", "==", user?.uid)
+    .where("keywords", "array-contains", keyword)
+    .orderBy("createdAt", "desc")
+    .get();
+  const data = querySnapshot.docs.map((documentSnapshot) => {
+    const docData = documentSnapshot.data();
+    return {
+      id: documentSnapshot.id,
+      createdAt: docData.createdAt,
+      creatorId: docData.creatorId,
+      text: docData.text,
+      folder: docData.folder,
+      isPinned: docData.isPinned,
+    };
+  });
+  return data;
 };

@@ -1,13 +1,18 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import { addNote, deleteNote, getNoteById, getNotes, updateNote } from "~/apis";
+import {
+  addNote,
+  deleteNote,
+  getNoteById,
+  getNotes,
+  updateNote,
+  pinNote,
+  searchNotes,
+  TUser,
+} from "~/apis";
 import { INote, notesFilterState } from "~/store";
-import { pinNote } from "~/apis";
 
-export const useNotesListQuery = (
-  user: FirebaseAuthTypes.User | undefined | null
-) => {
+export const useNotesListQuery = (user: TUser) => {
   const filter = useRecoilValue(notesFilterState);
   const {
     isLoading,
@@ -16,6 +21,7 @@ export const useNotesListQuery = (
     data: notesState,
   } = useQuery(["notes"], () => getNotes(user), {
     select: (data) => data.filter((note) => note.folder === filter),
+    useErrorBoundary: true,
   });
 
   return { isLoading, error, refetch, notesState };
@@ -102,4 +108,15 @@ export const useUpdateNoteMutation = (
     onError: () => onErrorCb(),
   });
   return { mutation };
+};
+
+export const useSearchNotesQuery = (keyword: any, user: TUser) => {
+  const { isLoading, data: searchResult } = useQuery(
+    ["notes", keyword],
+    () => searchNotes({ user, keyword }),
+    {
+      enabled: !!keyword,
+    }
+  );
+  return { isLoading, searchResult };
 };

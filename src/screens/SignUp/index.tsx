@@ -5,6 +5,7 @@ import { styled } from "styled-components/native";
 import IconButton from "components/IconButton";
 import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
+import Layout from "components/Layout";
 import { personalInfoState } from "~/store";
 import useThemeColors from "~/hooks/useThemeColors";
 import {
@@ -137,8 +138,8 @@ const SignUp = () => {
   ];
 
   return (
-    <Container>
-      <ScrollView>
+    <Layout>
+      <Container>
         <TitleWrapper>
           <Title>Sign Up</Title>
         </TitleWrapper>
@@ -182,17 +183,14 @@ const SignUp = () => {
             onPress={isOkaySignUp ? onSignUp : undefined}
           />
         </View>
-      </ScrollView>
-    </Container>
+      </Container>
+    </Layout>
   );
 };
 
 export default SignUp;
 
-const Container = styled.View`
-  flex: 1;
-  /* justify-content: center; */
-  background-color: ${({ theme }) => theme.color.bg};
+const Container = styled.ScrollView`
   padding: 0 20px;
 `;
 

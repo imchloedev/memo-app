@@ -2,14 +2,15 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { foldersCollection, memosCollection } from "~/lib";
 import { IFolder } from "~/store";
 
+export type TUser = FirebaseAuthTypes.User | null | undefined;
+
 interface IDeleteFolderAndNotes {
   id: undefined | string;
   folderName: string;
+  user?: TUser;
 }
 
-export const getFolders = async (
-  user: FirebaseAuthTypes.User | undefined | null
-): Promise<IFolder[]> => {
+export const getFolders = async (user: TUser): Promise<IFolder[]> => {
   const querySnapshot = await foldersCollection
     .where("creatorId", "==", user?.uid)
     .orderBy("createdAt", "asc")
@@ -31,13 +32,17 @@ export const getFolders = async (
 export const deleteFolder = async ({
   id,
   folderName,
+  user,
 }: IDeleteFolderAndNotes) => {
   await foldersCollection.doc(id).delete();
-  await deleteNotesFromFolder(folderName);
+  await deleteNotesFromFolder(user, folderName);
 };
 
-export const deleteNotesFromFolder = async (name: string) => {
-  const querySnapshot = await memosCollection.where("folder", "==", name).get();
+export const deleteNotesFromFolder = async (user: TUser, name: string) => {
+  const querySnapshot = await memosCollection
+    .where("creatorId", "==", user?.uid)
+    .where("folder", "==", name)
+    .get();
   querySnapshot.forEach((documentSnapshot) => {
     documentSnapshot.ref.delete();
   });

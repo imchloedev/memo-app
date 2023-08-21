@@ -1,14 +1,21 @@
 import React from "react";
-import { ScrollView, View, Alert, ActivityIndicator } from "react-native";
+import {
+  ScrollView,
+  View,
+  Alert,
+  ActivityIndicator,
+  SafeAreaView,
+} from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import auth from "@react-native-firebase/auth";
 import IconButton from "components/IconButton";
 import FolderItem from "components/FolderItem";
+import Layout from "components/Layout";
 import useThemeColors from "~/hooks/useThemeColors";
-import { showAlert } from "~/utils";
 import { useDeleteFolderMutation, useFoldersListQuery } from "~/hooks";
 import { MainStackParamList } from "../@types";
+import { TUser } from "~/apis";
 
 type FoldersProps = NativeStackScreenProps<MainStackParamList, "Folders">;
 
@@ -19,12 +26,18 @@ const Folders = ({ navigation }: FoldersProps) => {
   const { isLoading, foldersState, error } = useFoldersListQuery(currentUser);
   const { mutation: onDeleteFolder } = useDeleteFolderMutation();
 
-  const deleteFolder = async (id: string | undefined, folderName: string) => {
+  console.log(foldersState);
+
+  const deleteFolder = async (
+    id: string | undefined,
+    folderName: string,
+    user: TUser
+  ) => {
     const shouldDelete = await showDeleteConfirmation();
 
     if (!shouldDelete) return;
 
-    onDeleteFolder.mutate({ id, folderName });
+    onDeleteFolder.mutate({ id, folderName, user });
   };
 
   const showDeleteConfirmation = async () => {
@@ -51,60 +64,49 @@ const Folders = ({ navigation }: FoldersProps) => {
     navigation.navigate("Home", { folder: folderName });
   };
 
-  if (error)
-    return showAlert("Error", "An error occurred while deleting the folder.");
-
   return (
-    <Container>
-      <ScrollView>
-        <Wrapper>
-          <TitleWrapper>
-            <Title>Folders</Title>
-            <IconButton
-              iconName="addfolder"
-              onPress={() => navigation.navigate("Modal")}
-              color={mode.color.textColor}
-            />
-          </TitleWrapper>
-
-          <ContentWrapper>
-            {foldersState ? (
-              foldersState.length > 0 ? (
-                foldersState.map((folder, idx) => {
-                  const { id, name } = folder;
-                  return (
-                    <View key={id}>
-                      <FolderItem
-                        id={id}
-                        name={name}
-                        moveToFolder={moveToFolder}
-                        deleteFolder={deleteFolder}
-                      />
-                      {foldersState.length > idx + 1 && <Separator />}
-                    </View>
-                  );
-                })
-              ) : (
-                <GuideText>No folders here yet!</GuideText>
-              )
+    <Layout>
+      <Wrapper>
+        <TitleWrapper>
+          <Title>Folders</Title>
+          <IconButton
+            iconName="addfolder"
+            onPress={() => navigation.navigate("Modal")}
+            color={mode.color.textColor}
+          />
+        </TitleWrapper>
+        <ContentWrapper>
+          {foldersState ? (
+            foldersState.length > 0 ? (
+              foldersState.map((folder, idx) => {
+                const { id, name } = folder;
+                return (
+                  <View key={id}>
+                    <FolderItem
+                      id={id}
+                      name={name}
+                      moveToFolder={moveToFolder}
+                      deleteFolder={deleteFolder}
+                    />
+                    {foldersState.length > idx + 1 && <Separator />}
+                  </View>
+                );
+              })
             ) : (
-              <ActivityIndicator />
-            )}
-          </ContentWrapper>
-        </Wrapper>
-      </ScrollView>
-    </Container>
+              <GuideText>No folders here yet!</GuideText>
+            )
+          ) : (
+            <ActivityIndicator />
+          )}
+        </ContentWrapper>
+      </Wrapper>
+    </Layout>
   );
 };
 
 export default Folders;
 
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${({ theme }) => theme.color.bg};
-`;
-
-const Wrapper = styled.View`
+const Wrapper = styled.ScrollView`
   margin: 0 20px;
 `;
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
 import SubmitBtn from "components/Auth/SubmitBtn";
+import Layout from "components/Layout";
 import { onSignOut } from "~/apis";
 import { showAlert } from "~/utils";
 import {
@@ -10,7 +11,7 @@ import {
   Asset,
   ImagePickerResponse,
 } from "react-native-image-picker";
-import { ActivityIndicator, Image, Platform } from "react-native";
+import { ActivityIndicator, Image, Platform, View } from "react-native";
 import storage from "@react-native-firebase/storage";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -85,7 +86,7 @@ const MyPage = () => {
   }, [isFocused]);
 
   return (
-    <Container>
+    <Layout>
       <Title>Account</Title>
       <Wrapper>
         <UserInfoBox>
@@ -113,16 +114,11 @@ const MyPage = () => {
 
         <SubmitBtn title="Log out" isLoading={isLoading} onPress={onLeave} />
       </Wrapper>
-    </Container>
+    </Layout>
   );
 };
 
 export default MyPage;
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${({ theme }) => theme.color.bg};
-`;
 
 const Title = styled.Text`
   font-size: 24px;

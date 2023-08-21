@@ -15,6 +15,7 @@ import Folders from "screens/Folders";
 import IconButton from "components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
 import Modal from "./screens/Modal";
+import Search from "./screens/Search";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 const LoginStack = createNativeStackNavigator<LoginStackParamList>();
@@ -57,6 +58,7 @@ const HomeStackNavi = () => {
           name="Home"
           component={Home}
           options={({ navigation }) => ({
+            headerTitle: "",
             headerStyle: {
               backgroundColor: mode.color.bg,
             },
@@ -91,7 +93,6 @@ const HomeStackNavi = () => {
         <Stack.Screen
           name="Edit"
           component={Edit}
-          initialParams={{ noteId: "note" }}
           options={{
             title: "",
             headerStyle: {
@@ -142,6 +143,31 @@ const MyPageStackNavi = () => {
   );
 };
 
+const SearchStackNavi = () => {
+  const mode = useThemeColors();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Edit"
+        component={Edit}
+        options={({ navigation }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: mode.color.bg,
+          },
+          headerTintColor: mode.color.textColor,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const TabNavi = () => {
   const mode = useThemeColors();
 
@@ -159,6 +185,20 @@ const TabNavi = () => {
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="SearchTab"
+        component={SearchStackNavi}
+        options={{
+          tabBarLabel: "Search",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="note-search"
+              color={color}
+              size={26}
+            />
           ),
         }}
       />

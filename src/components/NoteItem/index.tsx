@@ -51,7 +51,10 @@ const Wrapper = styled.TouchableOpacity`
   margin: 10px 20px;
   padding: 20px;
   border-radius: 20px;
-  flex-basis: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 `;
 
 const NoteTitleWrapper = styled.View`
@@ -76,8 +79,8 @@ const NoteFolder = styled.Text`
 `;
 
 const ButtonWrapper = styled.View`
-  flex: 1;
+  display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
 `;

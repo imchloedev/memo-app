@@ -6,7 +6,8 @@ export interface INote {
   creatorId: string | undefined;
   text: string;
   folder: string;
-  isPinned?: boolean;
+  isPinned: boolean;
+  keywords?: string[];
 }
 
 export interface IFolder {

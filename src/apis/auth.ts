@@ -1,4 +1,5 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { TUser } from "./folders";
 
 export const signIn = (email: string, password: string) => {
   return auth().signInWithEmailAndPassword(email, password);
@@ -8,9 +9,7 @@ export const signUp = (email: string, password: string) => {
   return auth().createUserWithEmailAndPassword(email, password);
 };
 
-export const subscribeAuth = (
-  callback: (user: FirebaseAuthTypes.User | null) => void
-) => {
+export const subscribeAuth = (callback: (user: TUser) => void) => {
   return auth().onAuthStateChanged(callback);
 };
 
