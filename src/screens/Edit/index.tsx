@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import { MainStackParamList } from "screens/@types";
 import Layout from "components/Layout";
+import Spinner from "components/Spinner";
 import { generateKeyword, showAlert } from "~/utils";
 import { useNoteQuery, useUpdateNoteMutation } from "~/hooks/notes";
 import { SaveButton, Textarea } from "../NewNote";
@@ -11,10 +12,8 @@ type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
 const Edit = ({ route, navigation }: ViewProps) => {
   const { noteId } = route.params;
-  const [editedText, setEditedText] = useState("");
   const { note } = useNoteQuery(noteId);
-
-  console.log(navigation.canGoBack());
+  const [editedText, setEditedText] = useState("");
 
   const onSuccessUN = () => {
     // navigation.navigate("Home", { folder: filter });
@@ -60,12 +59,16 @@ const Edit = ({ route, navigation }: ViewProps) => {
   return (
     <Layout>
       <Wrapper>
-        <Textarea
-          value={editedText}
-          multiline={true}
-          onChangeText={(text: string) => setEditedText(text)}
-          placeholder="Insert here"
-        />
+        {note ? (
+          <Textarea
+            value={editedText}
+            multiline={true}
+            onChangeText={(text: string) => setEditedText(text)}
+            placeholder="Insert here"
+          />
+        ) : (
+          <Spinner />
+        )}
       </Wrapper>
     </Layout>
   );

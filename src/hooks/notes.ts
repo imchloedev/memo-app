@@ -12,6 +12,11 @@ import {
 } from "~/apis";
 import { INote, notesFilterState } from "~/store";
 
+export interface IMutationOptions {
+  onSuccess: () => void;
+  onError: () => void;
+}
+
 export const useNotesListQuery = (user: TUser) => {
   const filter = useRecoilValue(notesFilterState);
   const {
@@ -22,6 +27,7 @@ export const useNotesListQuery = (user: TUser) => {
   } = useQuery(["notes"], () => getNotes(user), {
     select: (data) => data.filter((note) => note.folder === filter),
     useErrorBoundary: true,
+    suspense: true,
   });
 
   return { isLoading, error, refetch, notesState };
@@ -53,7 +59,7 @@ export const usePinNoteMutation = () => {
       queryClient.invalidateQueries(["notes"]);
     },
     onError: (context: { previousData: INote[] }) => {
-      queryClient.setQueryData("notes", context.previousData);
+      queryClient.setQueryData(["notes"], context.previousData);
     },
   });
 
@@ -69,17 +75,14 @@ export const useDeleteNoteMutation = () => {
   return { mutation };
 };
 
-export const useAddNoteMutation = (
-  onSuccessCb: () => void,
-  onErrorCb: () => void
-) => {
+export const useAddNoteMutation = (options: IMutationOptions) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(addNote, {
     onSuccess: () => {
-      onSuccessCb();
+      options.onSuccess();
       queryClient.invalidateQueries(["notes"]);
     },
-    onError: () => onErrorCb(),
+    onError: () => options.onError(),
   });
   return { mutation };
 };

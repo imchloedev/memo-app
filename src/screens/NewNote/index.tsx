@@ -16,17 +16,18 @@ const NewNote = ({ navigation }: NewNoteProps) => {
   const [text, setText] = useRecoilState(textState);
   const filter = useRecoilValue(notesFilterState);
 
-  const onSuccessNN = () => {
-    setText("");
-    navigation.navigate("Home", { folder: filter });
-  };
-
-  const onErrorNN = () => {
-    showAlert("Error", "An error occurred while adding a new note.");
+  const options = {
+    onSuccess: () => {
+      setText("");
+      navigation.navigate("Home", { folder: filter });
+    },
+    onError: () => {
+      showAlert("Error", "An error occurred while adding a new note.");
+    },
   };
 
   const currentUser = auth().currentUser;
-  const { mutation: onAddNote } = useAddNoteMutation(onSuccessNN, onErrorNN);
+  const { mutation: onAddNote } = useAddNoteMutation(options);
 
   const newNote: INote = {
     createdAt: Date.now(),

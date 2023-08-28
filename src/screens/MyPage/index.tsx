@@ -11,79 +11,58 @@ import {
   Asset,
   ImagePickerResponse,
 } from "react-native-image-picker";
-import { ActivityIndicator, Image, Platform, View } from "react-native";
+import { ActivityIndicator, Image, Platform, View, Text } from "react-native";
 import storage from "@react-native-firebase/storage";
 import { useIsFocused } from "@react-navigation/native";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useProfileImageUploadMutation,
+  useUserImageUrlQuery,
+} from "~/hooks/useProfileImageUploadMutation";
+
+const mutationOptions = {
+  onSuccess: () => {},
+  onError: () => showAlert("Failed", "Please try again later."),
+};
+
+const imageOptions: ImageLibraryOptions = {
+  mediaType: "photo",
+  maxWidth: 512,
+  maxHeight: 512,
+  includeBase64: Platform.OS === "android",
+};
 
 const MyPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | undefined | null>();
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
   const currentUser = auth().currentUser;
-  const isFocused = useIsFocused();
 
-  const imageOptions: ImageLibraryOptions = {
-    mediaType: "photo",
-    maxWidth: 512,
-    maxHeight: 512,
-    includeBase64: Platform.OS === "android",
-  };
+  const { isFetching, userImageUrl } = useUserImageUrlQuery(currentUser);
+  const { mutation: uploadUserImage } =
+    useProfileImageUploadMutation(mutationOptions);
+
+  console.log(isFetching);
 
   const handleImageSelection = async () => {
     const result = await launchImageLibrary(imageOptions);
-    if (result.didCancel) return;
-    await uploadImage(result);
-  };
-
-  const uploadImage = async (res: ImagePickerResponse | undefined) => {
-    const asset: Asset | undefined = res?.assets?.[0];
-
-    if (!asset || !asset.uri) {
-      return;
-    }
-    setIsLoading(true);
-
-    const reference = storage().ref(
-      `/profile/${currentUser?.uid}/${asset.fileName}`
-    );
-
-    try {
-      await reference.putFile(asset.uri);
-      const fileUrl = await reference.getDownloadURL();
-      setImageUrl(fileUrl);
-      await updateProfileImg(fileUrl);
-    } catch (error) {
-      showAlert("Failed", "Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const updateProfileImg = async (url: string) => {
-    const updatedInfo = {
-      photoURL: url,
-    };
-
-    try {
-      await currentUser?.updateProfile(updatedInfo);
-    } catch (error) {
-      console.log(error);
+    if (!result.didCancel) {
+      try {
+        await uploadUserImage.mutateAsync({ result, currentUser });
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   const onLeave = async () => {
-    setIsLoading(true);
+    setIsLoggedOut(true);
     try {
       await onSignOut();
     } catch (error: unknown) {
       showAlert("Error", "Please try again later");
     } finally {
-      setIsLoading(false);
+      setIsLoggedOut(false);
     }
   };
-
-  useEffect(() => {
-    setImageUrl(currentUser?.photoURL);
-  }, [isFocused]);
 
   return (
     <Layout>
@@ -91,17 +70,15 @@ const MyPage = () => {
       <Wrapper>
         <UserInfoBox>
           <UserPhotoContainer onPress={handleImageSelection}>
-            {imageUrl ? (
-              isLoading ? (
-                <ActivityIndicator />
-              ) : (
-                <Image
-                  style={{ width: 100, height: 100 }}
-                  source={{
-                    uri: imageUrl,
-                  }}
-                />
-              )
+            {isFetching ? (
+              <ActivityIndicator />
+            ) : userImageUrl ? (
+              <Image
+                style={{ width: 100, height: 100 }}
+                source={{
+                  uri: userImageUrl,
+                }}
+              />
             ) : (
               <UserInitialName>
                 {currentUser?.email?.slice(0, 1)}
@@ -109,10 +86,12 @@ const MyPage = () => {
             )}
           </UserPhotoContainer>
 
+          {uploadUserImage.isLoading && <ActivityIndicator />}
+
           <Username>{currentUser?.email}</Username>
         </UserInfoBox>
 
-        <SubmitBtn title="Log out" isLoading={isLoading} onPress={onLeave} />
+        <SubmitBtn title="Log out" isLoading={isLoggedOut} onPress={onLeave} />
       </Wrapper>
     </Layout>
   );
@@ -148,15 +127,6 @@ const UserPhotoContainer = styled.TouchableOpacity`
   justify-content: center;
   overflow: hidden;
 `;
-
-const UserProfilePhoto = styled.Image.attrs({
-  source: { uri: `${(props: any) => props.path}` },
-})<{ path: string | undefined }>`
-  width: 80px;
-  height: 80px;
-`;
-
-// source={{ uri: imgInfo[0].uri }}
 
 const UserInitialName = styled.Text`
   font-size: 24px;

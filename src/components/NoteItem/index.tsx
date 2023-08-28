@@ -1,11 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { styled } from "styled-components/native";
 import IconButton from "components/IconButton";
 import useThemeColors from "~/hooks/useThemeColors";
 import { INote } from "~/store";
 import { getNoteDate } from "~/utils/dateToString";
 import { useDeleteNoteMutation, usePinNoteMutation } from "~/hooks/notes";
+import { UseMutationResult } from "react-query";
 
 interface INoteItemProps {
   note: INote;
@@ -17,6 +18,8 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
   const { mutation: onPinNote } = usePinNoteMutation();
   const { mutation: onDeleteNote } = useDeleteNoteMutation();
   const mode = useThemeColors();
+
+  // console.log(onDeleteNote.isLoading);
 
   return (
     <Wrapper onPress={() => moveToNote(id)}>
@@ -40,6 +43,14 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
           onPress={() => onPinNote.mutate({ id, isPinned })}
         />
       </ButtonWrapper>
+
+      {onDeleteNote.isLoading && (
+        <StatusBox>
+          <StatusWrapper>
+            <Text>Processing...</Text>
+          </StatusWrapper>
+        </StatusBox>
+      )}
     </Wrapper>
   );
 };
@@ -55,7 +66,7 @@ const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-`;
+`;1
 
 const NoteTitleWrapper = styled.View`
   height: 20px;
@@ -83,4 +94,21 @@ const ButtonWrapper = styled.View`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+`;
+
+const StatusBox = styled.View`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: gray;
+`;
+
+const StatusWrapper = styled.View`
+  /* position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0; */
 `;

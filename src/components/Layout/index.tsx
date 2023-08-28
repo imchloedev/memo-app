@@ -15,4 +15,5 @@ export default Layout;
 const Container = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.color.bg};
   flex: 1;
+  position: relative;
 `;
