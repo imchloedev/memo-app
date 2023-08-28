@@ -9,7 +9,7 @@ import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
 import { userState } from "~/store";
-import useThemeColors from "~/hooks/useThemeColors";
+import useThemeColors from "~/hooks/common/useThemeColors";
 import { isFirebaseAuthError, handleFirebaseAuthError, signIn } from "~/apis";
 import { showAlert, validateEmail, validatePassword } from "~/utils";
 

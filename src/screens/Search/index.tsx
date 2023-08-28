@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { styled } from "styled-components/native";
 import NoteItem from "components/NoteItem";
 import Layout from "components/Layout";
-import { useSearchNotesQuery } from "~/hooks";
+import { useSearchNotesQuery } from "~/hooks/notes";
 import { MainStackParamList } from "../@types";
 import auth from "@react-native-firebase/auth";
 

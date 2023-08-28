@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { SaveButton, Textarea } from "../NewNote";
+import { ActivityIndicator } from "react-native";
 import { styled } from "styled-components/native";
 import { MainStackParamList } from "screens/@types";
 import Layout from "components/Layout";
-import Spinner from "components/Spinner";
 import { generateKeyword, showAlert } from "~/utils";
 import { useNoteQuery, useUpdateNoteMutation } from "~/hooks/notes";
-import { SaveButton, Textarea } from "../NewNote";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 
@@ -67,7 +67,7 @@ const Edit = ({ route, navigation }: ViewProps) => {
             placeholder="Insert here"
           />
         ) : (
-          <Spinner />
+          <ActivityIndicator />
         )}
       </Wrapper>
     </Layout>

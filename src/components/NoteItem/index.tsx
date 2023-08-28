@@ -2,11 +2,10 @@ import React from "react";
 import { Text, View } from "react-native";
 import { styled } from "styled-components/native";
 import IconButton from "components/IconButton";
-import useThemeColors from "~/hooks/useThemeColors";
+import useThemeColors from "~/hooks/common/useThemeColors";
 import { INote } from "~/store";
 import { getNoteDate } from "~/utils/dateToString";
 import { useDeleteNoteMutation, usePinNoteMutation } from "~/hooks/notes";
-import { UseMutationResult } from "react-query";
 
 interface INoteItemProps {
   note: INote;
@@ -18,8 +17,6 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
   const { mutation: onPinNote } = usePinNoteMutation();
   const { mutation: onDeleteNote } = useDeleteNoteMutation();
   const mode = useThemeColors();
-
-  // console.log(onDeleteNote.isLoading);
 
   return (
     <Wrapper onPress={() => moveToNote(id)}>
@@ -66,7 +63,8 @@ const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-`;1
+`;
+1;
 
 const NoteTitleWrapper = styled.View`
   height: 20px;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
 import IconButton from "components/IconButton";
@@ -7,7 +7,7 @@ import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
 import { personalInfoState } from "~/store";
-import useThemeColors from "~/hooks/useThemeColors";
+import useThemeColors from "~/hooks/common/useThemeColors";
 import {
   showAlert,
   validateBirthDate,

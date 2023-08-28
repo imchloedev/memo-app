@@ -13,7 +13,7 @@ import SignIn from "screens/SignIn";
 import SignUp from "screens/SignUp";
 import Folders from "screens/Folders";
 import IconButton from "components/IconButton";
-import useThemeColors from "~/hooks/useThemeColors";
+import useThemeColors from "~/hooks/common/useThemeColors";
 import Modal from "./screens/Modal";
 import Search from "./screens/Search";
 

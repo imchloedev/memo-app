@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import Layout from "components/Layout";
 import { showAlert } from "~/utils";
-import { useAddFolderMutation, useFoldersListQuery } from "~/hooks";
+import { useAddFolderMutation, useFoldersListQuery } from "~/hooks/folders";
 import { SaveButton } from "../NewNote";
 import { MainStackParamList } from "../@types/index";
 

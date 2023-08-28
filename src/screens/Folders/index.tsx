@@ -1,19 +1,13 @@
 import React from "react";
-import {
-  ScrollView,
-  View,
-  Alert,
-  ActivityIndicator,
-  SafeAreaView,
-} from "react-native";
+import { ScrollView, View, Alert, ActivityIndicator } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import auth from "@react-native-firebase/auth";
 import IconButton from "components/IconButton";
 import FolderItem from "components/FolderItem";
 import Layout from "components/Layout";
-import useThemeColors from "~/hooks/useThemeColors";
-import { useDeleteFolderMutation, useFoldersListQuery } from "~/hooks";
+import useThemeColors from "~/hooks/common/useThemeColors";
+import { useDeleteFolderMutation, useFoldersListQuery } from "~/hooks/folders";
 import { MainStackParamList } from "../@types";
 import { TUser } from "~/apis";
 

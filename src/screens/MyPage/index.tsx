@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { ActivityIndicator, Image, Platform } from "react-native";
 import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from "react-native-image-picker";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
 import { onSignOut } from "~/apis";
 import { showAlert } from "~/utils";
-import {
-  launchImageLibrary,
-  ImageLibraryOptions,
-  Asset,
-  ImagePickerResponse,
-} from "react-native-image-picker";
-import { ActivityIndicator, Image, Platform, View, Text } from "react-native";
-import storage from "@react-native-firebase/storage";
-import { useIsFocused } from "@react-navigation/native";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  useProfileImageUploadMutation,
-  useUserImageUrlQuery,
-} from "~/hooks/useProfileImageUploadMutation";
+
+import { useUploadImageMutation, useUserImageUrlQuery } from "~/hooks/profile";
 
 const mutationOptions = {
   onSuccess: () => {},
@@ -37,8 +30,7 @@ const MyPage = () => {
   const currentUser = auth().currentUser;
 
   const { isFetching, userImageUrl } = useUserImageUrlQuery(currentUser);
-  const { mutation: uploadUserImage } =
-    useProfileImageUploadMutation(mutationOptions);
+  const { mutation: uploadUserImage } = useUploadImageMutation(mutationOptions);
 
   console.log(isFetching);
 
