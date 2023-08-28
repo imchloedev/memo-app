@@ -24,11 +24,11 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const mode = useThemeColors();
 
-  const isOkaySignUp = !(
+  const isOkaySignUp =
+    fullname &&
     validateEmail(username) &&
     validatePassword(password) &&
-    validateBirthDate(birthDate)
-  );
+    validateBirthDate(birthDate);
 
   const handleChange = (text: string, name: string) => {
     setPersonalInfo({ ...personalInfo, [name]: text });
@@ -42,7 +42,6 @@ const SignUp = () => {
         ...personalInfo,
       });
       setPersonalInfo({
-        ...personalInfo,
         fullname: "",
         username: "",
         password: "",
@@ -71,9 +70,9 @@ const SignUp = () => {
       placeholderTextColor: "#ddd",
       handleChange: handleChange,
       child: null,
-      isValid: false,
+      isValid: true,
       secureTextEntry: false,
-      errMsg: "",
+      errMsg: undefined,
     },
     {
       id: 2,
@@ -201,6 +200,5 @@ const TitleWrapper = styled.View`
 const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
-
   color: ${({ theme }) => theme.color.textColor};
 `;

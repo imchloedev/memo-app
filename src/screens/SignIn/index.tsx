@@ -23,13 +23,11 @@ const SignIn = ({ navigation }: SignInProps) => {
 
   const mode = useThemeColors();
 
-  const isOkayLogin = !(validateEmail(username) && validatePassword(password));
+  const isOkayLogin = validateEmail(username) && validatePassword(password);
 
   const handleChange = (text: string, name: string) => {
     setUserInfo({ ...userInfo, [name]: text });
   };
-
-  console.log(isLoading);
 
   const onLogin = async () => {
     setIsLoading(true);

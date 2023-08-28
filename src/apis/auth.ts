@@ -44,6 +44,6 @@ export const handleFirebaseAuthError = (
     case "auth/internal-error":
       return "Invalid request.";
     default:
-      return "Login failed.";
+      return "Please try again.";
   }
 };
