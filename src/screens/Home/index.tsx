@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Animated, SectionList, Text } from "react-native";
+import { Animated, SectionList } from "react-native";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useRecoilState } from "recoil";
@@ -7,9 +7,10 @@ import auth from "@react-native-firebase/auth";
 import HomeHeaderTitle from "components/HomeHeaderTitle";
 import NoteItem from "components/NoteItem";
 import Layout from "components/Layout";
+import ScreenTitle from "components/ScreenTitle";
 import { notesFilterState } from "~/store";
 import { MainStackParamList } from "../@types/index";
-import { useNotesListQuery } from "~/hooks/notes";
+import { useNotesListQuery } from "hooks/notes";
 
 type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
@@ -48,9 +49,6 @@ const Home = ({ navigation, route }: HomeProps) => {
     animatedHeaderTitle();
   }, [scrollY]);
 
-  // if (isLoading) return <ActivityIndicator />;
-  // if (error) return showAlert("Error", "Please try again later.");
-
   return (
     <Layout>
       {notesState && (
@@ -73,10 +71,13 @@ const Home = ({ navigation, route }: HomeProps) => {
             <NoteItem note={item} moveToNote={moveToNote} />
           )}
           keyExtractor={(item) => item.id?.toString() || ""}
-          onScroll={handleScroll}
-          ListHeaderComponent={() => <Title>{filter}</Title>}
-          ListEmptyComponent={() => <Text>No notes here yet.</Text>}
+          ListHeaderComponent={() => (
+            <TitleWrapper>
+              <ScreenTitle title={filter} />
+            </TitleWrapper>
+          )}
           stickySectionHeadersEnabled={true}
+          onScroll={handleScroll}
         />
       )}
     </Layout>
@@ -85,12 +86,8 @@ const Home = ({ navigation, route }: HomeProps) => {
 
 export default Home;
 
-const Title = styled.Text`
-  font-size: 24px;
-  margin: 20px 0;
-  padding: 0 20px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.textColor};
+const TitleWrapper = styled.View`
+  padding: 20px;
 `;
 
 const CategoryText = styled.Text`

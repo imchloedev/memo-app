@@ -6,15 +6,16 @@ import IconButton from "components/IconButton";
 import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
+import ScreenTitle from "components/ScreenTitle";
 import { personalInfoState } from "~/store";
-import useThemeColors from "~/hooks/common/useThemeColors";
+import useThemeColors from "hooks/common/useThemeColors";
 import {
   showAlert,
   validateBirthDate,
   validateEmail,
   validatePassword,
-} from "~/utils";
-import { handleFirebaseAuthError, isFirebaseAuthError, signUp } from "~/apis";
+} from "utils";
+import { handleFirebaseAuthError, isFirebaseAuthError, signUp } from "apis";
 import { usersCollection } from "~/lib";
 
 const SignUp = () => {
@@ -25,7 +26,7 @@ const SignUp = () => {
   const mode = useThemeColors();
 
   const isOkaySignUp =
-    fullname &&
+    fullname.length > 0 &&
     validateEmail(username) &&
     validatePassword(password) &&
     validateBirthDate(birthDate);
@@ -103,13 +104,13 @@ const SignUp = () => {
       handleChange: handleChange,
       child: isShow ? (
         <IconButton
-          iconName="eyeo"
+          iconName="eye"
           color={mode.color.textColor}
           onPress={() => setIsShow((prev) => !prev)}
         />
       ) : (
         <IconButton
-          iconName="eye"
+          iconName="eyeo"
           color={mode.color.textColor}
           onPress={() => setIsShow((prev) => !prev)}
         />
@@ -140,7 +141,7 @@ const SignUp = () => {
     <Layout>
       <Container>
         <TitleWrapper>
-          <Title>Sign Up</Title>
+          <ScreenTitle title="Sign Up" />
         </TitleWrapper>
         <View>
           {SIGNUP_INPUT_PROPS.map(
@@ -179,6 +180,7 @@ const SignUp = () => {
           <SubmitBtn
             title="Sign Up"
             isLoading={isLoading}
+            isOkay={isOkaySignUp}
             onPress={isOkaySignUp ? onSignUp : undefined}
           />
         </View>
@@ -195,10 +197,4 @@ const Container = styled.ScrollView`
 
 const TitleWrapper = styled.View`
   padding: 40px 0;
-`;
-
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.textColor};
 `;

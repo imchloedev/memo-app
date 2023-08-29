@@ -5,8 +5,8 @@ import { ActivityIndicator } from "react-native";
 import { styled } from "styled-components/native";
 import { MainStackParamList } from "screens/@types";
 import Layout from "components/Layout";
-import { generateKeyword, showAlert } from "~/utils";
-import { useNoteQuery, useUpdateNoteMutation } from "~/hooks/notes";
+import { generateKeyword, showAlert } from "utils";
+import { useNoteQuery, useUpdateNoteMutation } from "hooks/notes";
 
 type ViewProps = NativeStackScreenProps<MainStackParamList, "Edit">;
 

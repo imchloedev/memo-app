@@ -19,7 +19,8 @@
       "assets/*": ["assets/*"],
       "styles/*": ["styles/*"],
       "apis/*": ["apis/*"],
-      "utils/*": ["utils/*"]
+      "utils/*": ["utils/*"],
+      "hooks/*": ["hooks/*"]
     }
   },
   "exclude": [

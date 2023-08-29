@@ -6,12 +6,13 @@ import { light } from "~/styles/theme";
 interface ISubmitBtnProps {
   title: string;
   isLoading: boolean;
+  isOkay: boolean;
   onPress: (() => void) | undefined;
 }
 
-const SubmitBtn = ({ title, onPress, isLoading }: ISubmitBtnProps) => {
+const SubmitBtn = ({ title, onPress, isLoading, isOkay }: ISubmitBtnProps) => {
   return (
-    <BtnContainer onPress={onPress}>
+    <BtnContainer onPress={onPress} isOkay={isOkay}>
       {isLoading ? <ActivityIndicator /> : <BtnText>{title}</BtnText>}
     </BtnContainer>
   );
@@ -19,8 +20,9 @@ const SubmitBtn = ({ title, onPress, isLoading }: ISubmitBtnProps) => {
 
 export default SubmitBtn;
 
-const BtnContainer = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.color.buttonColor};
+const BtnContainer = styled.TouchableOpacity<{ isOkay: boolean }>`
+  background-color: ${({ isOkay, theme }) =>
+    isOkay ? theme.color.buttonColor : theme.color.deactiveColor};
   border-radius: 100px;
   height: 44px;
   margin-top: 20px;

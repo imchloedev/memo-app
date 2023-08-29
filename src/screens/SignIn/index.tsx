@@ -8,10 +8,11 @@ import IconButton from "components/IconButton";
 import Input from "components/Auth/Input";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
+import ScreenTitle from "~/components/ScreenTitle";
 import { userState } from "~/store";
-import useThemeColors from "~/hooks/common/useThemeColors";
-import { isFirebaseAuthError, handleFirebaseAuthError, signIn } from "~/apis";
-import { showAlert, validateEmail, validatePassword } from "~/utils";
+import useThemeColors from "hooks/common/useThemeColors";
+import { isFirebaseAuthError, handleFirebaseAuthError, signIn } from "apis";
+import { showAlert, validateEmail, validatePassword } from "utils";
 
 type SignInProps = NativeStackScreenProps<LoginStackParamList, "SignIn">;
 
@@ -20,7 +21,6 @@ const SignIn = ({ navigation }: SignInProps) => {
   const { username, password } = userInfo;
   const [isShow, setIsShow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   const mode = useThemeColors();
 
   const isOkayLogin = validateEmail(username) && validatePassword(password);
@@ -74,13 +74,13 @@ const SignIn = ({ navigation }: SignInProps) => {
       handleChange: handleChange,
       child: isShow ? (
         <IconButton
-          iconName="eyeo"
+          iconName="eye"
           color={mode.color.textColor}
           onPress={() => setIsShow((prev) => !prev)}
         />
       ) : (
         <IconButton
-          iconName="eye"
+          iconName="eyeo"
           color={mode.color.textColor}
           onPress={() => setIsShow((prev) => !prev)}
         />
@@ -95,7 +95,7 @@ const SignIn = ({ navigation }: SignInProps) => {
     <Layout>
       <Container>
         <TitleWrapper>
-          <Title>Sign in</Title>
+          <ScreenTitle title="Sign in" />
           <SubTitle>Welcome Back!</SubTitle>
         </TitleWrapper>
         <View>
@@ -135,6 +135,7 @@ const SignIn = ({ navigation }: SignInProps) => {
           <SubmitBtn
             title="Sign In"
             isLoading={isLoading}
+            isOkay={isOkayLogin}
             onPress={isOkayLogin ? onLogin : undefined}
           />
           <LinkWrapper onPress={() => navigation.navigate("SignUp")}>
@@ -160,14 +161,8 @@ const TitleWrapper = styled.View`
   padding-bottom: 60px;
 `;
 
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: ${({ theme }) => theme.color.textColor};
-`;
-
 const SubTitle = styled.Text`
+  margin-top: 10px;
   color: ${({ theme }) => theme.color.textColor};
 `;
 

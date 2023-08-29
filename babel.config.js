@@ -31,6 +31,7 @@ module.exports = {
           styles: "./src/styles",
           api: "./src/api",
           utils: "./src/utils",
+          hooks: "./src/hooks",
         },
       },
     ],

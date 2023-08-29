@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
+import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
 import NoteItem from "components/NoteItem";
 import Layout from "components/Layout";
-import { useSearchNotesQuery } from "~/hooks/notes";
+import ScreenTitle from "components/ScreenTitle";
+import { useSearchNotesQuery } from "hooks/notes";
 import { MainStackParamList } from "../@types";
-import auth from "@react-native-firebase/auth";
 
 type SearchScreenProps = NativeStackScreenProps<MainStackParamList, "Search">;
 
@@ -22,7 +23,9 @@ const Search = ({ navigation }: SearchScreenProps) => {
   return (
     <Layout>
       <Container>
-        <Title>Search</Title>
+        <TitleWrapper>
+          <ScreenTitle title="Search" />
+        </TitleWrapper>
         <InputWrapper>
           <Input
             value={text}
@@ -62,11 +65,8 @@ const Container = styled.View`
   padding: 0 20px;
 `;
 
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
+const TitleWrapper = styled.View`
   margin: 40px 0;
-  color: ${({ theme }) => theme.color.textColor};
 `;
 
 const InputWrapper = styled.View`

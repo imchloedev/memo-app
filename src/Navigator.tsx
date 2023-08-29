@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/AntDesign";
 import { LoginStackParamList, MainStackParamList } from "screens/@types";
 import auth from "@react-native-firebase/auth";
 import Home from "screens/Home";
@@ -184,7 +184,7 @@ const TabNavi = () => {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <Icon name="home" color={color} size={26} />
           ),
         }}
       />
@@ -194,11 +194,7 @@ const TabNavi = () => {
         options={{
           tabBarLabel: "Search",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="note-search"
-              color={color}
-              size={26}
-            />
+            <Icon name="search1" color={color} size={26} />
           ),
         }}
       />
@@ -208,7 +204,7 @@ const TabNavi = () => {
         options={{
           tabBarLabel: "My Page",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <Icon name="user" color={color} size={26} />
           ),
         }}
       />

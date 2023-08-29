@@ -6,10 +6,11 @@ import auth from "@react-native-firebase/auth";
 import IconButton from "components/IconButton";
 import FolderItem from "components/FolderItem";
 import Layout from "components/Layout";
-import useThemeColors from "~/hooks/common/useThemeColors";
-import { useDeleteFolderMutation, useFoldersListQuery } from "~/hooks/folders";
+import ScreenTitle from "components/ScreenTitle";
+import useThemeColors from "hooks/common/useThemeColors";
+import { useDeleteFolderMutation, useFoldersListQuery } from "hooks/folders";
 import { MainStackParamList } from "../@types";
-import { TUser } from "~/apis";
+import { TUser } from "apis";
 
 type FoldersProps = NativeStackScreenProps<MainStackParamList, "Folders">;
 
@@ -62,7 +63,7 @@ const Folders = ({ navigation }: FoldersProps) => {
     <Layout>
       <Wrapper>
         <TitleWrapper>
-          <Title>Folders</Title>
+          <ScreenTitle title="Folders" />
           <IconButton
             iconName="addfolder"
             onPress={() => navigation.navigate("Modal")}
@@ -110,12 +111,6 @@ const TitleWrapper = styled.View`
   justify-content: space-between;
   align-items: center;
   margin: 40px 0;
-`;
-
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.textColor};
 `;
 
 const ContentWrapper = styled.View`

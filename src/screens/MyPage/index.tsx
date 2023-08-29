@@ -8,10 +8,10 @@ import {
 } from "react-native-image-picker";
 import SubmitBtn from "components/Auth/SubmitBtn";
 import Layout from "components/Layout";
-import { onSignOut } from "~/apis";
-import { showAlert } from "~/utils";
-
-import { useUploadImageMutation, useUserImageUrlQuery } from "~/hooks/profile";
+import ScreenTitle from "components/ScreenTitle";
+import { onSignOut } from "apis";
+import { showAlert } from "utils";
+import { useUploadImageMutation, useUserImageUrlQuery } from "hooks/profile";
 
 const mutationOptions = {
   onSuccess: () => {},
@@ -58,7 +58,9 @@ const MyPage = () => {
 
   return (
     <Layout>
-      <Title>Account</Title>
+      <TitleWrapper>
+        <ScreenTitle title="Account" />
+      </TitleWrapper>
       <Wrapper>
         <UserInfoBox>
           <UserPhotoContainer onPress={handleImageSelection}>
@@ -83,7 +85,12 @@ const MyPage = () => {
           <Username>{currentUser?.email}</Username>
         </UserInfoBox>
 
-        <SubmitBtn title="Log out" isLoading={isLoggedOut} onPress={onLeave} />
+        <SubmitBtn
+          title="Log out"
+          isLoading={isLoggedOut}
+          isOkay={true}
+          onPress={onLeave}
+        />
       </Wrapper>
     </Layout>
   );
@@ -91,11 +98,8 @@ const MyPage = () => {
 
 export default MyPage;
 
-const Title = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
+const TitleWrapper = styled.View`
   margin: 40px 0;
-  color: ${({ theme }) => theme.color.textColor};
   padding: 0 20px;
 `;
 
