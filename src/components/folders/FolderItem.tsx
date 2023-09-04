@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import auth from "@react-native-firebase/auth";
-import IconButton from "components/IconButton";
+import IconButton from "~/components/common/IconButton";
 import useThemeColors from "hooks/common/useThemeColors";
 import { TUser } from "apis";
 

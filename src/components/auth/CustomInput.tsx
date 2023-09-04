@@ -16,7 +16,7 @@ interface IInputProps {
   isValid: boolean;
 }
 
-const Input = (props: IInputProps) => {
+const CustomInput = (props: IInputProps) => {
   const {
     name,
     handleChange,
@@ -44,7 +44,7 @@ const Input = (props: IInputProps) => {
   );
 };
 
-export default Input;
+export default CustomInput;
 
 const InputContainer = styled.View`
   margin-bottom: 20px;

@@ -27,6 +27,7 @@ export const usePinNoteMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["notes"]);
     },
+
     onError: (context: { previousData: INote[] }) => {
       queryClient.setQueryData(["notes"], context.previousData);
     },

@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
-import NoteItem from "components/NoteItem";
-import Layout from "components/Layout";
-import ScreenTitle from "components/ScreenTitle";
+import NoteItem from "~/components/notes/NoteItem";
+import Layout from "~/components/common/Layout";
+import ScreenTitle from "~/components/common/ScreenTitle";
 import { useSearchNotesQuery } from "hooks/notes";
 import { MainStackParamList } from "../@types";
 

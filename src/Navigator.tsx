@@ -12,7 +12,7 @@ import MyPage from "screens/MyPage";
 import SignIn from "screens/SignIn";
 import SignUp from "screens/SignUp";
 import Folders from "screens/Folders";
-import IconButton from "components/IconButton";
+import IconButton from "~/components/common/IconButton";
 import useThemeColors from "~/hooks/common/useThemeColors";
 import Modal from "./screens/Modal";
 import Search from "./screens/Search";

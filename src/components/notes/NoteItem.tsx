@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { styled } from "styled-components/native";
-import IconButton from "components/IconButton";
+import IconButton from "~/components/common/IconButton";
 import useThemeColors from "~/hooks/common/useThemeColors";
 import { INote } from "~/store";
 import { getNoteDate } from "~/utils/dateToString";

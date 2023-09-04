@@ -11,5 +11,6 @@ export const useAddNoteMutation = (options: IMutationOptions) => {
     },
     onError: () => options.onError(),
   });
+
   return { mutation };
 };

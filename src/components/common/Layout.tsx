@@ -1,5 +1,4 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
 import { styled } from "styled-components/native";
 
 interface ILayoutProp {

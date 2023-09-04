@@ -7,7 +7,7 @@ interface IHomeHeaderTitle {
   styles?: any;
 }
 
-const HomeHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {
+const AnimatedHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {
   return (
     <Animated.View style={{ opacity: styles }}>
       <HeaderTitle>{title}</HeaderTitle>
@@ -15,7 +15,7 @@ const HomeHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {
   );
 };
 
-export default HomeHeaderTitle;
+export default AnimatedHeaderTitle;
 
 const HeaderTitle = styled.Text`
   color: ${({ theme }) => theme.color.textColor};

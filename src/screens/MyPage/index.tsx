@@ -6,9 +6,9 @@ import {
   launchImageLibrary,
   ImageLibraryOptions,
 } from "react-native-image-picker";
-import SubmitBtn from "components/Auth/SubmitBtn";
-import Layout from "components/Layout";
-import ScreenTitle from "components/ScreenTitle";
+import SubmitBtn from "~/components/auth/SubmitBtn";
+import Layout from "~/components/common/Layout";
+import ScreenTitle from "~/components/common/ScreenTitle";
 import { onSignOut } from "apis";
 import { showAlert } from "utils";
 import { useUploadImageMutation, useUserImageUrlQuery } from "hooks/profile";
@@ -31,8 +31,6 @@ const MyPage = () => {
 
   const { isFetching, userImageUrl } = useUserImageUrlQuery(currentUser);
   const { mutation: uploadUserImage } = useUploadImageMutation(mutationOptions);
-
-  console.log(isFetching);
 
   const handleImageSelection = async () => {
     const result = await launchImageLibrary(imageOptions);

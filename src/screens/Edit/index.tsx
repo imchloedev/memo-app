@@ -4,7 +4,7 @@ import { SaveButton, Textarea } from "../NewNote";
 import { ActivityIndicator } from "react-native";
 import { styled } from "styled-components/native";
 import { MainStackParamList } from "screens/@types";
-import Layout from "components/Layout";
+import Layout from "~/components/common/Layout";
 import { generateKeyword, showAlert } from "utils";
 import { useNoteQuery, useUpdateNoteMutation } from "hooks/notes";
 

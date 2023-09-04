@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
-import Layout from "components/Layout";
+import Layout from "~/components/common/Layout";
 import { showAlert } from "~/utils";
 import { useAddFolderMutation, useFoldersListQuery } from "~/hooks/folders";
 import { SaveButton } from "../NewNote";

@@ -4,7 +4,7 @@ import { ScrollView } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import auth from "@react-native-firebase/auth";
-import Layout from "components/Layout";
+import Layout from "~/components/common/Layout";
 import { INote, notesFilterState, textState } from "~/store";
 import { generateKeyword, showAlert } from "~/utils";
 import { useAddNoteMutation } from "~/hooks/notes";

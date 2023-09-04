@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import { styled } from "styled-components/native";
-import IconButton from "components/IconButton";
-import Input from "components/Auth/Input";
-import SubmitBtn from "components/Auth/SubmitBtn";
-import Layout from "components/Layout";
-import ScreenTitle from "components/ScreenTitle";
+import IconButton from "~/components/common/IconButton";
+import Input from "~/components/auth/CustomInput";
+import SubmitBtn from "~/components/auth/SubmitBtn";
+import Layout from "~/components/common/Layout";
+import ScreenTitle from "~/components/common/ScreenTitle";
 import { personalInfoState } from "~/store";
 import useThemeColors from "hooks/common/useThemeColors";
 import {
