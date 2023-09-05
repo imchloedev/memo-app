@@ -4,10 +4,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useSetRecoilState } from "recoil";
 import auth from "@react-native-firebase/auth";
 import ErrorBoundary from "react-native-error-boundary";
-import HomeHeaderTitle from "~/components/common/AnimatedHeaderTitle";
-import Spinner from "~/components/fallback/LoadingFallback";
-import CustomFallback from "~/components/fallback/CustomErrorFallback";
-import NoteSection from "~/components/notes/NoteSection";
+import HomeHeaderTitle from "components/common/AnimatedHeaderTitle";
+import NoteSkeleton from "components/fallback/NoteSkeleton";
+import Layout from "components/common/Layout";
+import CustomFallback from "components/fallback/CustomErrorFallback";
+import NoteSection from "components/notes/NoteSection";
 import { notesFilterState } from "~/store";
 import { MainStackParamList } from "../@types/index";
 
@@ -39,6 +40,7 @@ const Home = ({ navigation, route }: HomeProps) => {
         outputRange: [0, 1],
         extrapolate: "clamp",
       });
+
       return navigation.setOptions({
         headerTitle: () => <HomeHeaderTitle title={folder} styles={opacity} />,
       });
@@ -48,15 +50,17 @@ const Home = ({ navigation, route }: HomeProps) => {
   }, [scrollY]);
 
   return (
-    <ErrorBoundary FallbackComponent={CustomFallback}>
-      <Suspense fallback={<Spinner />}>
-        <NoteSection
-          user={currentUser}
-          handleScroll={handleScroll}
-          moveToNote={moveToNote}
-        />
-      </Suspense>
-    </ErrorBoundary>
+    <Layout>
+      <ErrorBoundary FallbackComponent={CustomFallback}>
+        <Suspense fallback={<NoteSkeleton />}>
+          <NoteSection
+            user={currentUser}
+            handleScroll={handleScroll}
+            moveToNote={moveToNote}
+          />
+        </Suspense>
+      </ErrorBoundary>
+    </Layout>
   );
 };
 

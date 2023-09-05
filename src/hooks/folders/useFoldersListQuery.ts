@@ -6,7 +6,7 @@ export const useFoldersListQuery = (user: TUser) => {
     isLoading,
     data: foldersState,
     error,
-  } = useQuery(["folders"], () => getFolders(user));
+  } = useQuery(["folders"], () => getFolders(user), { suspense: true });
 
   return { isLoading, foldersState, error };
 };

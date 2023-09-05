@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { styled } from "styled-components/native";
 import IconButton from "~/components/common/IconButton";
 import useThemeColors from "~/hooks/common/useThemeColors";
@@ -40,14 +40,6 @@ const NoteItem = ({ note, moveToNote }: INoteItemProps) => {
           onPress={() => onPinNote.mutate({ id, isPinned })}
         />
       </ButtonWrapper>
-
-      {onDeleteNote.isLoading && (
-        <StatusBox>
-          <StatusWrapper>
-            <Text>Processing...</Text>
-          </StatusWrapper>
-        </StatusBox>
-      )}
     </Wrapper>
   );
 };
@@ -92,21 +84,4 @@ const ButtonWrapper = styled.View`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-`;
-
-const StatusBox = styled.View`
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: gray;
-`;
-
-const StatusWrapper = styled.View`
-  /* position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0; */
 `;

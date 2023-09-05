@@ -4,7 +4,7 @@ import { styled } from "styled-components/native";
 
 interface IHomeHeaderTitle {
   title?: string;
-  styles?: any;
+  styles?: Animated.AnimatedInterpolation<string | number>;
 }
 
 const AnimatedHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {

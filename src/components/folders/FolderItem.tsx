@@ -40,7 +40,7 @@ const FolderItem = ({
 export default FolderItem;
 
 const FolderBox = styled.TouchableOpacity`
-  margin: 14px 0;
+  padding: 14px 20px;
   display: flex;
   gap: 10px;
   flex-direction: row;

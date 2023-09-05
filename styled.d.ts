@@ -19,6 +19,7 @@ declare module "styled-components/native" {
         activeColor: string;
         deactiveColor: string;
         boxActiveColor: string;
+        skeletonColor: string;
       };
     };
 
@@ -39,6 +40,7 @@ declare module "styled-components/native" {
         activeColor: string;
         deactiveColor: string;
         boxActiveColor: string;
+        skeletonColor: string;
       };
     };
   }

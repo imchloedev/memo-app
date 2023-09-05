@@ -15,18 +15,11 @@ const Edit = ({ route, navigation }: ViewProps) => {
   const { note } = useNoteQuery(noteId);
   const [editedText, setEditedText] = useState("");
 
-  const onSuccessUN = () => {
-    // navigation.navigate("Home", { folder: filter });
-  };
-
   const onErrorUN = () => {
     showAlert("Error", "An error occurred while updating the note.");
   };
 
-  const { mutation: onUpdateNote } = useUpdateNoteMutation(
-    onSuccessUN,
-    onErrorUN
-  );
+  const { mutation: onUpdateNote } = useUpdateNoteMutation(onErrorUN);
 
   const updated = {
     createdAt: Date.now(),

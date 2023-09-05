@@ -8,7 +8,6 @@ const CustomErrorFallback = ({ error, resetError }: Props) => {
   return (
     <Container>
       <ErrorMsg>Something happened!</ErrorMsg>
-      <Text>{error.toString()}</Text>
       <RetryCopy>Please try again.</RetryCopy>
     </Container>
   );
@@ -17,6 +16,11 @@ const CustomErrorFallback = ({ error, resetError }: Props) => {
 export default CustomErrorFallback;
 
 const Container = styled.SafeAreaView`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   background-color: ${({ theme }) => theme.color.bg};
   flex: 1;
   align-items: center;
@@ -31,6 +35,6 @@ const ErrorMsg = styled.Text`
 `;
 
 const RetryCopy = styled.Text`
-  margin-top: 40px;
+  margin-top: 10px;
   color: ${({ theme }) => theme.color.textColor};
 `;

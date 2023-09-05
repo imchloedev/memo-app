@@ -1,8 +1,7 @@
 import React from "react";
-import { SectionList } from "react-native";
+import { SectionList, Text } from "react-native";
 import { styled } from "styled-components/native";
 import { useRecoilValue } from "recoil";
-import Layout from "~/components/common/Layout";
 import NoteItem from "~/components/notes/NoteItem";
 import ScreenTitle from "~/components/common/ScreenTitle";
 import { useNotesListQuery } from "hooks/notes";
@@ -20,7 +19,7 @@ const NoteSection = ({ user, handleScroll, moveToNote }: INoteSectionProps) => {
   const filter = useRecoilValue(notesFilterState);
 
   return (
-    <Layout>
+    <>
       {notesState && (
         <SectionList
           sections={[
@@ -50,7 +49,7 @@ const NoteSection = ({ user, handleScroll, moveToNote }: INoteSectionProps) => {
           onScroll={handleScroll}
         />
       )}
-    </Layout>
+    </>
   );
 };
 

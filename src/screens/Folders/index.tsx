@@ -2,13 +2,11 @@ import React, { Suspense } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "styled-components/native";
 import auth from "@react-native-firebase/auth";
-import ErrorBoundary from "react-native-error-boundary";
 import IconButton from "components/common/IconButton";
 import Layout from "components/common/Layout";
 import ScreenTitle from "components/common/ScreenTitle";
 import FolderSection from "components/folders/FolderSection";
-import CustomErrorFallback from "components/fallback/CustomErrorFallback";
-import LoadingFallback from "components/fallback/LoadingFallback";
+import FolderSkeleton from "components/fallback/FolderSkeleton";
 import useThemeColors from "hooks/common/useThemeColors";
 import { MainStackParamList } from "../@types";
 
@@ -34,11 +32,9 @@ const Folders = ({ navigation }: FoldersProps) => {
           />
         </TitleWrapper>
         <ContentWrapper>
-          <ErrorBoundary FallbackComponent={CustomErrorFallback}>
-            <Suspense fallback={<LoadingFallback />}>
-              <FolderSection user={currentUser} moveToFolder={moveToFolder} />
-            </Suspense>
-          </ErrorBoundary>
+          <Suspense fallback={<FolderSkeleton />}>
+            <FolderSection user={currentUser} moveToFolder={moveToFolder} />
+          </Suspense>
         </ContentWrapper>
       </Wrapper>
     </Layout>
@@ -60,7 +56,9 @@ const TitleWrapper = styled.View`
 `;
 
 const ContentWrapper = styled.View`
-  padding: 10px 20px;
+  padding: 10px 0;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.container};
+  display: flex;
+  flex-direction: column;
 `;
