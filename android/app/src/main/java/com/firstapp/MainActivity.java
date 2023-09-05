@@ -1,4 +1,4 @@
-package com.firstapp;
+package com.memo;
 
 import android.content.res.Configuration;
 import android.os.Bundle; // add
@@ -46,7 +46,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "FirstApp";
+    return "Memo";
   }
 
   /**
