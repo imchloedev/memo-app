@@ -5,28 +5,16 @@
  * @format
  */
 
-import React, { Suspense, useEffect, useState } from "react";
-import { ThemeProvider, styled } from "styled-components/native";
+import React, { useEffect, useState } from "react";
+import { ThemeProvider } from "styled-components/native";
 import { RecoilRoot } from "recoil";
-import {
-  ActivityIndicator,
-  useColorScheme,
-  SafeAreaView,
-  View,
-  Text,
-} from "react-native";
+import { ActivityIndicator, useColorScheme } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import { PaperProvider, useTheme } from "react-native-paper";
 import Navigator from "./Navigator";
 import { dark, light } from "styles/theme";
 import { subscribeAuth } from "~/apis";
-import {
-  QueryClient,
-  QueryClientProvider,
-  QueryErrorResetBoundary,
-} from "react-query";
-import { ErrorBoundary } from "react-error-boundary";
-// import { ReactQueryDevtools } from "react-query-devtools/native";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
