@@ -40,10 +40,8 @@ function App(): JSX.Element {
   const handleAuthState = (user: any) => {
     if (user) {
       setCurrentUser(user);
-      console.log("logged");
     } else {
       setCurrentUser(null);
-      console.log("logged out");
     }
     if (initializing) setInitializing(false);
   };

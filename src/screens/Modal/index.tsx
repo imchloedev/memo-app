@@ -14,7 +14,6 @@ const Modal = ({ navigation }: ModalProps) => {
   const [text, setText] = useState("");
   const currentUser = auth().currentUser;
   const { foldersState } = useFoldersListQuery(currentUser);
-  console.log(foldersState);
 
   const onSuccessNF = () => {
     setText("");
