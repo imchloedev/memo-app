@@ -36,6 +36,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
     folder: filter,
     isPinned: false,
     keywords: generateKeyword(text),
+    lowercaseKeywords: generateKeyword(text.toLocaleLowerCase()),
   };
 
   useEffect(() => {

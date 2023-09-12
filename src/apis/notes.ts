@@ -69,7 +69,7 @@ export const updateNote = async ({ noteId, updated }: IUpdateNote) => {
 export const searchNotes = async ({ user, keyword }: ISearchNote) => {
   const querySnapshot = await memosCollection
     .where("creatorId", "==", user?.uid)
-    .where("keywords", "array-contains", keyword)
+    .where("lowercaseKeywords", "array-contains", keyword.toLowerCase())
     .orderBy("createdAt", "desc")
     .get();
   const data = querySnapshot.docs.map((documentSnapshot) => {

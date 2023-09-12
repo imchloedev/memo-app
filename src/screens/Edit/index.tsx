@@ -25,6 +25,7 @@ const Edit = ({ route, navigation }: ViewProps) => {
     createdAt: Date.now(),
     text: editedText,
     keywords: generateKeyword(editedText),
+    lowercaseKeywords: generateKeyword(editedText.toLocaleLowerCase()),
   };
 
   const updateNote = () => {

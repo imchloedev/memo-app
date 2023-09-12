@@ -8,6 +8,7 @@ export interface INote {
   folder: string;
   isPinned: boolean;
   keywords?: string[];
+  lowercaseKeywords?: string[];
 }
 
 export interface IFolder {
