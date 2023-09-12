@@ -20,8 +20,6 @@ const Home = ({ navigation, route }: HomeProps) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const setFilter = useSetRecoilState(notesFilterState);
 
-  console.log("currentUser", currentUser);
-
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     { useNativeDriver: false }
