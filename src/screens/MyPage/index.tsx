@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { styled } from "styled-components/native";
-import UserProfileImage from "components/common/UserProfileImage";
+import UserProfile from "~/components/common/UserProfile";
 import SubmitBtn from "components/auth/SubmitBtn";
 import Layout from "components/common/Layout";
 import ScreenTitle from "components/common/ScreenTitle";
@@ -29,7 +29,7 @@ const MyPage = () => {
         <ScreenTitle title="Account" />
       </TitleWrapper>
       <Wrapper>
-        <UserProfileImage currentUser={currentUser} />
+        <UserProfile currentUser={currentUser} />
         <SubmitBtn
           title="Log out"
           isLoading={isLoggedOut}

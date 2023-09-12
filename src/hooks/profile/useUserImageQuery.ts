@@ -6,6 +6,6 @@ export const useUserImageUrlQuery = (user: TUser) => {
     isFetching,
     isLoading,
     data: userImageUrl,
-  } = useQuery(["userImageUrl"], () => user?.photoURL || null);
+  } = useQuery(["userImageUrl"], () => user?.photoURL);
   return { isFetching, isLoading, userImageUrl };
 };
