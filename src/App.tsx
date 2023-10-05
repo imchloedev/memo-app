@@ -16,7 +16,14 @@ import { dark, light } from "styles/theme";
 import { subscribeAuth } from "~/apis";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  },
+});
 
 function App(): JSX.Element {
   const theme = useColorScheme();

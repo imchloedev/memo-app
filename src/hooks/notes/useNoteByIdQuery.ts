@@ -7,7 +7,7 @@ export const useNoteQuery = (noteId: string | undefined) => {
     error,
     refetch,
     data: note,
-  } = useQuery(["notes", { id: noteId }], () => getNoteById(noteId));
+  } = useQuery(["notes", { noteId: noteId }], () => getNoteById(noteId));
 
   return { isLoading, error, refetch, note };
 };

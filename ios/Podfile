@@ -30,8 +30,9 @@ end
 target 'FirstApp' do
   config = use_native_modules!
   pod 'GoogleUtilities', :modular_headers => true
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Auth'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+  
   use_frameworks! :linkage => :static
 
 

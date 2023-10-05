@@ -3,7 +3,7 @@ import { searchNotes, TUser } from "~/apis";
 
 export const useSearchNotesQuery = (keyword: any, user: TUser) => {
   const { isLoading, data: searchResult } = useQuery(
-    ["notes", keyword],
+    ["notes", { userId: user?.uid }, { keyword: keyword }],
     () => searchNotes({ user, keyword }),
     {
       enabled: !!keyword,

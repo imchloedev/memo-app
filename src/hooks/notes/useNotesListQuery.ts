@@ -10,7 +10,7 @@ export const useNotesListQuery = (user: TUser) => {
     error,
     refetch,
     data: notesState,
-  } = useQuery(["notes"], () => getNotes(user), {
+  } = useQuery(["notes", { userId: user?.uid }], () => getNotes(user), {
     select: (data) => data.filter((note) => note.folder === filter),
     useErrorBoundary: true,
     suspense: true,
