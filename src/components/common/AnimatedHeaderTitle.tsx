@@ -2,12 +2,12 @@ import React from "react";
 import { Animated } from "react-native";
 import { styled } from "styled-components/native";
 
-interface IHomeHeaderTitle {
+interface IHeaderTitle {
   title?: string;
   styles?: Animated.AnimatedInterpolation<string | number>;
 }
 
-const AnimatedHeaderTitle = ({ title, styles }: IHomeHeaderTitle) => {
+const AnimatedHeaderTitle = ({ title, styles }: IHeaderTitle) => {
   return (
     <Animated.View style={{ opacity: styles }}>
       <HeaderTitle>{title}</HeaderTitle>

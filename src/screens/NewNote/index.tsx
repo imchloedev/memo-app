@@ -19,7 +19,7 @@ const NewNote = ({ navigation }: NewNoteProps) => {
   const options = {
     onSuccess: () => {
       setText("");
-      navigation.navigate("Home", { folder: filter });
+      navigation.navigate("Notes", { folder: filter });
     },
     onError: () => {
       showAlert("Error", "An error occurred while adding a new note.");

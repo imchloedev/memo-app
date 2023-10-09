@@ -14,7 +14,7 @@
 		2B85F8141025757B46EC02F4 /* Pods_FirstApp_FirstAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D88F51441AD9F4E75423A7 /* Pods_FirstApp_FirstAppTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BE22C60E3C374A80642616BC /* Pods_FirstApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A03FA516B92E85047248888A /* Pods_FirstApp.framework */; };
-		CC7DD3002ACE66ED004A955F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC7DD2FF2ACE66ED004A955F /* GoogleService-Info.plist */; };
+		CCC4D17E2AD0329700CFF828 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCC4D17D2AD0329700CFF828 /* GoogleService-Info.plist */; };
 		CCEE5AEA2A49D6AC00222755 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCEE5ADA2A49D6AC00222755 /* Foundation.ttf */; };
 		CCEE5AEB2A49D6AC00222755 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCEE5ADB2A49D6AC00222755 /* AntDesign.ttf */; };
 		CCEE5AEC2A49D6AC00222755 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCEE5ADC2A49D6AC00222755 /* Fontisto.ttf */; };
@@ -59,7 +59,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FirstApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-FirstApp-FirstAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirstApp-FirstAppTests.release.xcconfig"; path = "Target Support Files/Pods-FirstApp-FirstAppTests/Pods-FirstApp-FirstAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		A03FA516B92E85047248888A /* Pods_FirstApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirstApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC7DD2FF2ACE66ED004A955F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CCC4D17D2AD0329700CFF828 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCEE5ADA2A49D6AC00222755 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CCEE5ADB2A49D6AC00222755 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		CCEE5ADC2A49D6AC00222755 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		13B07FAE1A68108700A75B9A /* FirstApp */ = {
 			isa = PBXGroup;
 			children = (
-				CC7DD2FF2ACE66ED004A955F /* GoogleService-Info.plist */,
+				CCC4D17D2AD0329700CFF828 /* GoogleService-Info.plist */,
 				CCEE5AD92A49D61000222755 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -313,7 +313,7 @@
 				CCEE5AEE2A49D6AC00222755 /* Ionicons.ttf in Resources */,
 				CCEE5AEB2A49D6AC00222755 /* AntDesign.ttf in Resources */,
 				CCEE5AF92A49D6AC00222755 /* Octicons.ttf in Resources */,
-				CC7DD3002ACE66ED004A955F /* GoogleService-Info.plist in Resources */,
+				CCC4D17E2AD0329700CFF828 /* GoogleService-Info.plist in Resources */,
 				CCEE5AF32A49D6AC00222755 /* FontAwesome5_Regular.ttf in Resources */,
 				CCEE5AF22A49D6AC00222755 /* MaterialIcons.ttf in Resources */,
 				CCEE5AEF2A49D6AC00222755 /* Entypo.ttf in Resources */,

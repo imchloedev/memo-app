@@ -17,7 +17,7 @@ const Folders = ({ navigation }: FoldersProps) => {
   const currentUser = auth().currentUser;
 
   const moveToFolder = (folderName: string) => {
-    navigation.navigate("Home", { folder: folderName });
+    navigation.navigate("Notes", { folder: folderName });
   };
 
   return (

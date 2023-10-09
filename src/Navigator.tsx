@@ -5,9 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { LoginStackParamList, MainStackParamList } from "screens/@types";
 import auth from "@react-native-firebase/auth";
-import Home from "screens/Home";
-import Edit from "screens/Edit";
 import NewNote, { SaveButton } from "screens/NewNote";
+import Notes from "screens/Notes";
+import Edit from "screens/Edit";
 import MyPage from "screens/MyPage";
 import SignIn from "screens/SignIn";
 import SignUp from "screens/SignUp";
@@ -55,8 +55,8 @@ const HomeStackNavi = () => {
     <Stack.Navigator initialRouteName="Folders">
       <Stack.Group>
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Notes"
+          component={Notes}
           options={({ navigation }) => ({
             headerTitle: "",
             headerStyle: {

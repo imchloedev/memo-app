@@ -77,8 +77,6 @@ const UserProfile = ({ currentUser }: IUserProfileImageProps) => {
           />
         </ButtonGroup>
       </View>
-
-      {uploadUserImage.isLoading && <ActivityIndicator />}
     </UserInfoBox>
   );
 };
